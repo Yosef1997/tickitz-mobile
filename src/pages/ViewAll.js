@@ -63,4 +63,4 @@ const mapStateToProps = (state) => ({
   poster: state.movie,
 });
 // const mapDispatchToProps = {detailshow, date, location, time};
-export default connect(mapStateToProps, mapDispatchToProps)(ViewAll);
+export default connect(mapStateToProps)(ViewAll);

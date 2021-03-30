@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Image, Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {time, detailtime} from '../Redux/Action/showTime';
 
 class index extends Component {
   async componentDidMount() {
@@ -134,6 +133,4 @@ const mapStateToProps = (state) => ({
   showtime: state.cinema,
 });
 
-const mapDispatchToProps = {time, detailtime};
-
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default connect(mapStateToProps)(index);

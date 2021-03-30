@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
-import {date, detaildate} from '../Redux/Action/showTime';
 
 class index extends Component {
   constructor(props) {
@@ -119,6 +118,4 @@ const mapStateToProps = (state) => ({
   cinema: state.cinema,
 });
 
-const mapDispatchToProps = {date, detaildate};
-
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default connect(mapStateToProps)(index);

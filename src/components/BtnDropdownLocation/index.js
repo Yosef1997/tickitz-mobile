@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
-import {location, detaillocation} from '../Redux/Action/showTime';
 
 class index extends Component {
   constructor(props) {
@@ -29,7 +28,6 @@ class index extends Component {
     this.setState({
       pickerSelection: newValue,
     });
-    this.props.detaillocation(id);
     this.togglePicker();
   }
 
@@ -123,6 +121,4 @@ const mapStateToProps = (state) => ({
   cinema: state.cinema,
 });
 
-const mapDispatchToProps = {location, detaillocation};
-
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default connect(mapStateToProps)(index);
