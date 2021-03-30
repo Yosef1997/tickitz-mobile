@@ -15,14 +15,6 @@ import CardCinema from '../components/CardCinema';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {REACT_APP_API_URL as API_URL} from '@env';
-import {
-  cinema,
-  date,
-  location,
-  detailcinema,
-  detaildate,
-  detaillocation,
-} from '../components/Redux/Action/cinema';
 
 class MovieDetail extends Component {
   state = {
@@ -30,24 +22,24 @@ class MovieDetail extends Component {
     location: 'Set a location',
   };
   async componentDidMount() {
-    await this.props.cinema();
-    await this.props.date();
-    await this.props.location();
+    // await this.props.cinema();
+    // await this.props.date();
+    // await this.props.location();
   }
-  setDate(newValue, id) {
-    this.setState({
-      date: newValue,
-    });
-    this.props.detaildate(id);
-    // this.togglePicker();
-  }
-  setLocation(newValue, id) {
-    this.setState({
-      date: newValue,
-    });
-    this.props.detaillocation(id);
-    // this.togglePicker();
-  }
+  // setDate(newValue, id) {
+  //   this.setState({
+  //     date: newValue,
+  //   });
+  //   this.props.detaildate(id);
+  //   // this.togglePicker();
+  // }
+  // setLocation(newValue, id) {
+  //   this.setState({
+  //     date: newValue,
+  //   });
+  //   this.props.detaillocation(id);
+  //   // this.togglePicker();
+  // }
   goToOrder = async (id) => {
     await this.props.detailcinema(id);
     this.props.navigation.navigate('Order');
@@ -133,5 +125,5 @@ const mapStateToProps = (state) => ({
   listcinema: state.cinema,
 });
 
-const mapDispatchToProps = {cinema, detailcinema, detaildate, detaillocation};
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);
+// const mapDispatchToProps = {cinema, detailcinema, detaildate, detaillocation};
+export default connect(mapStateToProps)(MovieDetail);

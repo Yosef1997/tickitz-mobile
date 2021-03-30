@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import {REACT_APP_API_URL as API_URL} from '@env';
 import CardPoster from '../components/CardNowShowing';
 import SearchBar from '../components/InputViewAll';
-import {detailshow} from '../components/Redux/Action/movie';
-import {date, location, time} from '../components/Redux/Action/cinema';
+// import {detailshow} from '../components/Redux/Action/movie';
+// import {date, location, time} from '../components/Redux/Action/cinema';
 
 class ViewAll extends Component {
   goToDetail = async (id) => {
@@ -25,7 +25,7 @@ class ViewAll extends Component {
             keyboardType="default"
           />
         </View>
-        <FlatList
+        {/* <FlatList
           data={this.props.poster.movie}
           keyExtractor={(item, index) => String(item.id)}
           renderItem={({item}) => {
@@ -38,7 +38,7 @@ class ViewAll extends Component {
               </View>
             );
           }}
-        />
+        /> */}
       </React.Fragment>
     );
   }
@@ -62,5 +62,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   poster: state.movie,
 });
-const mapDispatchToProps = {detailshow, date, location, time};
+// const mapDispatchToProps = {detailshow, date, location, time};
 export default connect(mapStateToProps, mapDispatchToProps)(ViewAll);

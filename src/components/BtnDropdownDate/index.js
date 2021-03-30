@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
-import {date, detaildate} from '../Redux/Action/cinema';
+import {date, detaildate} from '../Redux/Action/showTime';
 
 class index extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Image, Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {time, detailtime} from '../Redux/Action/cinema';
+import {time, detailtime} from '../Redux/Action/showTime';
 
 class index extends Component {
   async componentDidMount() {

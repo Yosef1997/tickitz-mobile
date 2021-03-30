@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
-import {location, detaillocation} from '../Redux/Action/cinema';
+import {location, detaillocation} from '../Redux/Action/showTime';
 
 class index extends Component {
   constructor(props) {
