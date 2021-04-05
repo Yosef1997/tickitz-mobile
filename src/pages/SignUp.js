@@ -12,23 +12,44 @@ import InputEmail from '../components/InputEmail';
 import InputPass from '../components/InputPassword';
 import GoogleIcon from '../assets/googleicon.png';
 import FacebookIcon from '../assets/facebookicon.png';
+import {Formik} from 'formik';
 import {connect} from 'react-redux';
 import {signup} from '../components/Redux/Action/auth';
 
 class SignUp extends Component {
   state = {
-    email: '',
-    password: '',
+    isLoading: false,
+    isMessage: false,
   };
-  doSignUp = async () => {
+  registerValidation(values) {
+    const errors = {};
+    const {email, password} = values;
+
+    if (!email) {
+      errors.msg = 'Email Required';
+    } else if (!password) {
+      errors.msg = 'Password Required';
+    } else if (password.length < 8) {
+      errors.msg = 'Password have at least 8 characters';
+    }
+    return errors;
+  }
+
+  async doSignUp(values) {
+    this.setState({isLoading: true});
     const {email, password} = this.state;
     console.log(email, password);
     await this.props.signup(email, password);
+    setTimeout(() => {
+      this.setState({isLoading: false, isMessage: true});
+    }, 1000);
+    setTimeout(() => {
+      this.setState({isMessage: false});
+    }, 5000);
     if (this.props.auth.message !== null) {
       this.props.navigation.navigate('SignIn');
     }
-    console.log(this.state);
-  };
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
