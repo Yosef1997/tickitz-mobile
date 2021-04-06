@@ -6,30 +6,48 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import TickitzLogo from '../assets/TickitzLogo.png';
 import InputEmail from '../components/InputEmail';
 import InputPass from '../components/InputPassword';
 import GoogleIcon from '../assets/googleicon.png';
 import FacebookIcon from '../assets/facebookicon.png';
+import Button from '../components/Button';
+import {Formik} from 'formik';
 import {connect} from 'react-redux';
 import {signin, detailUser} from '../components/Redux/Action/auth';
 import {show} from '../components/Redux/Action/auth';
 
 class SignIn extends Component {
   state = {
-    email: '',
-    password: '',
+    isLoading: false,
+    isMessage: false,
   };
-  doLogin = async () => {
-    const {email, password} = this.state;
-    await this.props.signin(email, password);
-    // await this.props.detailUser(this.props.auth.user.id);
-    // await this.props.show();
+  loginValidation(values) {
+    const errors = {};
+    const {email, password} = values;
+    if (!email) {
+      errors.msg = 'Email Required';
+    } else if (!password) {
+      errors.msg = 'Password Required';
+    }
+    return errors;
+  }
+
+  async doLogin(values) {
+    this.setState({isLoading: true});
+    await this.props.signin(values.email, values.password);
+    setTimeout(() => {
+      this.setState({isLoading: false, isMessage: true});
+    }, 1000);
+    setTimeout(() => {
+      this.setState({isMessage: false});
+    }, 5000);
     if (this.props.auth.token !== null) {
       this.props.navigation.navigate('Home');
     }
-  };
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -39,22 +57,67 @@ class SignIn extends Component {
         <View>
           <Text style={styles.signup}>Sign In</Text>
         </View>
-        <View style={styles.form}>
-          <Text style={styles.formlabel}>Email</Text>
-          <InputEmail onChangeText={(email) => this.setState({email})} />
-        </View>
-        <View>
-          <Text style={styles.formlabel}>Password</Text>
-          <InputPass
-            placeholder="Write your password"
-            onChangeText={(password) => this.setState({password})}
-          />
-        </View>
-        <TouchableOpacity style={styles.btnsignup} onPress={this.doLogin}>
+        <Formik
+          initialValues={{email: '', password: ''}}
+          validate={(values) => this.loginValidation(values)}
+          onSubmit={(values, {resetForm}) => {
+            this.setState({isLoading: true});
+            this.doLogin(values);
+            setTimeout(() => {
+              resetForm();
+            }, 500);
+          }}>
+          {({values, errors, handleChange, handleBlur, handleSubmit}) => (
+            <>
+              <View style={styles.form}>
+                <Text style={styles.formlabel}>Email</Text>
+                <InputEmail
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                />
+              </View>
+              <View>
+                <Text style={styles.formlabel}>Password</Text>
+                <InputPass
+                  placeholder="Write your password"
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                />
+                {errors.msg ? (
+                  <Text style={styles.textError}>{errors.msg}</Text>
+                ) : null}
+                {this.props.auth.message !== '' && this.state.isMessage ? (
+                  <Text style={styles.textsuccess}>
+                    {this.props.auth.message}
+                  </Text>
+                ) : null}
+                {this.props.auth.errorMsg !== '' && this.state.isMessage ? (
+                  <Text style={styles.textError}>
+                    {this.props.auth.errorMsg}
+                  </Text>
+                ) : null}
+                {this.state.isLoading ? (
+                  <View>
+                    <ActivityIndicator />
+                  </View>
+                ) : (
+                  <View style={styles.formBtn}>
+                    <Button disabled={errors.msg} onPress={handleSubmit}>
+                      Join for free
+                    </Button>
+                  </View>
+                )}
+              </View>
+            </>
+          )}
+        </Formik>
+        {/* <TouchableOpacity style={styles.btnsignup} onPress={this.doLogin}>
           <View>
             <Text style={styles.btnfont}>Sign In</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View style={styles.tologin}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('ForgetPass')}>
@@ -155,6 +218,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 64,
     width: 64,
+  },
+  textError: {
+    fontSize: 14,
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  textsuccess: {
+    fontSize: 14,
+    color: '#00D16C',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  formBtn: {
+    paddingVertical: 25,
   },
 });
 

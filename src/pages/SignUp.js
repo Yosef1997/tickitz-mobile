@@ -27,7 +27,7 @@ class SignUp extends Component {
     const errors = {};
     const {email, password} = values;
 
-    if (!email && email === '') {
+    if (!email) {
       errors.msg = 'Email Required';
     } else if (!password) {
       errors.msg = 'Password Required';
@@ -39,19 +39,17 @@ class SignUp extends Component {
 
   async doSignUp(values) {
     this.setState({isLoading: true});
-    const {email, password} = this.state;
-    console.log(email, password);
-    await this.props.signup({email: values.email, password: values.password});
+    console.log(values.email, values.password);
+    await this.props.signup(values.email, values.password);
     setTimeout(() => {
       this.setState({isLoading: false, isMessage: true});
     }, 1000);
     setTimeout(() => {
       this.setState({isMessage: false});
     }, 5000);
-    if (this.props.auth.message !== null) {
+    if (this.props.auth.errorMsg === '') {
       this.props.navigation.navigate('SignIn');
     }
-    console.log(this.state);
   }
   render() {
     return (
@@ -87,19 +85,20 @@ class SignUp extends Component {
                 <InputPass
                   placeholder="Write your password"
                   onBlur={handleBlur('password')}
+                  value={values.password}
                   onChangeText={handleChange('password')}
                 />
                 {errors.msg ? (
                   <Text style={styles.textError}>{errors.msg}</Text>
                 ) : null}
-                {this.props.auth.message && this.state.isMessage ? (
+                {this.props.auth.message !== '' && this.state.isMessage ? (
                   <Text style={styles.textsuccess}>
-                    {this.props.auth.authMessage}
+                    {this.props.auth.message}
                   </Text>
                 ) : null}
-                {this.props.auth.errorMsg && this.state.isMessage ? (
+                {this.props.auth.errorMsg !== '' && this.state.isMessage ? (
                   <Text style={styles.textError}>
-                    {this.props.auth.errorMessage}
+                    {this.props.auth.errorMsg}
                   </Text>
                 ) : null}
                 {this.state.isLoading ? (
@@ -107,33 +106,16 @@ class SignUp extends Component {
                     <ActivityIndicator size="large" />
                   </View>
                 ) : (
-                  <Button disabled={errors.msg} onPress={handleSubmit}>
-                    Join for free
-                  </Button>
+                  <View style={styles.formBtn}>
+                    <Button disabled={errors.msg} onPress={handleSubmit}>
+                      Join for free
+                    </Button>
+                  </View>
                 )}
               </View>
-              {/* <TouchableOpacity
-                onPress={this.doSignUp}
-                style={styles.btnsignup}>
-                <Text style={styles.btnfont}>Join for free</Text>
-              </TouchableOpacity> */}
             </>
           )}
         </Formik>
-        {/* <View style={styles.form}>
-          <Text style={styles.formlabel}>Email</Text>
-          <InputEmail onChangeText={(email) => this.setState({email})} />
-        </View>
-        <View>
-          <Text style={styles.formlabel}>Password</Text>
-          <InputPass
-            placeholder="Write your password"
-            onChangeText={(password) => this.setState({password})}
-          />
-        </View> */}
-        {/* <TouchableOpacity onPress={this.doSignUp} style={styles.btnsignup}>
-          <Text style={styles.btnfont}>Join for free</Text>
-        </TouchableOpacity> */}
         <View style={styles.tologin}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('SignIn')}>
@@ -240,17 +222,19 @@ const styles = StyleSheet.create({
     width: 20,
   },
   textError: {
-    // fontFamily: 'Roboto-Reguler',
-    fontSize: 16,
+    fontSize: 14,
     color: 'red',
     textAlign: 'center',
     marginVertical: 10,
   },
   textsuccess: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#00D16C',
     textAlign: 'center',
     marginVertical: 10,
+  },
+  formBtn: {
+    paddingVertical: 25,
   },
 });
 

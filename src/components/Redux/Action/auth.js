@@ -14,7 +14,7 @@ export const signup = (email, password) => {
       const results = await http().post('/auth/register', params);
       dispatch({
         type: 'SIGN_UP',
-        payload: results.data.result,
+        payload: results.data.message,
       });
     } catch (err) {
       console.log(err);
@@ -38,7 +38,7 @@ export const signin = (email, password) => {
         payload: '',
       });
       const results = await http().post('/auth/login', params);
-      const token = results.data.token;
+      const token = results.data.results;
       const user = jwt(token);
       dispatch({
         type: 'SIGN_IN',
@@ -56,42 +56,20 @@ export const signin = (email, password) => {
   };
 };
 
-export const detailUser = (id) => {
+export const updateUser = (token, id, data) => {
   return async (dispatch) => {
     try {
+      const form = new FormData();
+      Object.keys(data).forEach((key) => {
+        form.append(key, key[data]);
+      });
       dispatch({
         type: 'SET_AUTH_MESSAGE',
         payload: '',
       });
-      const results = await http().get(`/auth/profile/${id}`);
+      const results = await http().patch(`/auth/profile/${id}`, form);
       dispatch({
-        type: 'DETAIL_USER',
-        payload: results.data.results,
-      });
-    } catch (err) {
-      const {message} = err.response.data;
-      dispatch({
-        type: 'SET_AUTH_MESSAGE',
-        payload: message,
-      });
-    }
-  };
-};
-
-export const editUser = (id, fullname, email, phone) => {
-  return async (dispatch) => {
-    try {
-      const data = new URLSearchParams();
-      data.append('firstname', fullname);
-      data.append('lastname', email);
-      data.append('email', phone);
-      dispatch({
-        type: 'SET_AUTH_MESSAGE',
-        payload: '',
-      });
-      const results = await http().patch(`/auth/profile/${id}`, data);
-      dispatch({
-        type: 'EDIT_USER',
+        type: 'UPDATE_USER',
         payload: results.data.results,
       });
     } catch (err) {
