@@ -3,22 +3,15 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import InputCustom from '../InputCustom';
 import InputPass from '../InputPassword';
 import {connect} from 'react-redux';
-import {editUser} from '../Redux/Action/auth';
+import {updateUser} from '../Redux/Action/auth';
 
 class index extends Component {
-  state = {
-    fullname: this.props.user.detailUser.firstname,
-    email: this.props.user.detailUser.email,
-    phone: this.props.user.detailUser.phone,
-  };
-  // componentDidUpdate() {
-  //   this.props.editUser();
-  // }
   doEdit = (fullname, email, phone) => {
     const {id} = this.props.user.detailUser;
     this.props.editUser(id, fullname, email, phone);
   };
   render() {
+    const {user} = this.props.auth;
     return (
       <React.Fragment>
         <View>
@@ -29,19 +22,19 @@ class index extends Component {
             <Text style={styles.text2}>Details Information</Text>
             <Text style={styles.text3}>Full Name</Text>
             <InputCustom
-              placeholder={this.props.user.detailUser.firstname}
+              placeholder={`${user.firstName} ${user.lastName}`}
               onChangeText={(fullname) => this.setState({fullname})}
             />
             <Text style={styles.text4}>E-mail</Text>
             <InputCustom
-              placeholder={this.props.user.detailUser.email}
+              placeholder={user.email}
               onChangeText={(email) => this.setState({email})}
               keyboardType="email-address"
             />
             <Text style={styles.text4}>Phone Number</Text>
             <InputCustom
               text="+62"
-              placeholder={this.props.user.detailUser.phone}
+              placeholder={user.phoneNumber}
               onChangeText={(phone) => this.setState({phone})}
             />
           </View>
@@ -114,9 +107,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  user: state.auth,
+  auth: state.auth,
 });
 
-const mapDispatchToProps = {editUser};
+const mapDispatchToProps = {updateUser};
 
 export default connect(mapStateToProps, mapDispatchToProps)(index);

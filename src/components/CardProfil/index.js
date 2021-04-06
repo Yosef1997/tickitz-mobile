@@ -3,19 +3,11 @@ import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Profil from '../../assets/profil.png';
 import Star from '../../assets/Vector.png';
 import {connect} from 'react-redux';
+import {REACT_APP_API_URL as API_URL} from '@env';
 
 class index extends Component {
-  state = {
-    fullname: 'Full Name',
-  };
-  componentDidMount() {
-    if (this.props.user.detailUser.firstname !== '') {
-      this.setState({
-        fullname: this.props.user.detailUser.firstname,
-      });
-    }
-  }
   render() {
+    const {user} = this.props.auth;
     return (
       <View style={styles.container}>
         <View style={styles.row1}>
@@ -27,10 +19,24 @@ class index extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.row2}>
-          <TouchableOpacity>
-            <Image source={Profil} style={styles.profil} />
-          </TouchableOpacity>
-          <Text style={styles.text3}>{this.state.fullname}</Text>
+          {user.picture !== null ? (
+            <TouchableOpacity>
+              <Image
+                source={{uri: `${API_URL}/upload/profile/${user.picture}`}}
+                style={styles.profil}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity>
+              <Image source={Profil} style={styles.profil} />
+            </TouchableOpacity>
+          )}
+          {user.firstname !== null && user.name !== null ? (
+            <Text
+              style={styles.text3}>{`${user.firstName} ${user.lastName}`}</Text>
+          ) : (
+            <Text style={styles.text3}>No name</Text>
+          )}
           <Text style={styles.text4}>Moviegoers</Text>
         </View>
         <View>
@@ -187,7 +193,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  user: state.auth,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(index);
