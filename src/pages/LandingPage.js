@@ -14,14 +14,14 @@ import CardShow from '../components/CardNowShowing';
 import BtnMonth from '../components/BtnMonth';
 import CardUpcoming from '../components/CardUpcoming';
 import {connect} from 'react-redux';
-import {show, detailshow} from '../components/Redux/Action/movie';
+// import {show, detailshow} from '../components/Redux/Action/movie';
 // import {date, location, time} from '../components/Redux/Action/cinema';
 import {REACT_APP_API_URL as API_URL} from '@env';
 
 class LandingPage extends Component {
-  async componentDidMount() {
-    await this.props.show();
-  }
+  // async componentDidMount() {
+  //   await this.props.show();
+  // }
   goToDetail = async (id) => {
     await this.props.detailshow(id);
     // await this.props.date();
@@ -42,7 +42,7 @@ class LandingPage extends Component {
                 <Text style={styles.text2}> view all </Text>
               </TouchableOpacity>
             </View>
-            <FlatList
+            {/* <FlatList
               horizontal
               data={this.props.nowShow.movie}
               keyExtractor={(item, index) => String(item.id)}
@@ -54,7 +54,7 @@ class LandingPage extends Component {
                   />
                 );
               }}
-            />
+            /> */}
           </View>
           <View style={styles.Upcomingsection}>
             <View style={styles.Upcomingheader}>
@@ -135,6 +135,6 @@ const mapStateToProps = (state) => ({
   nowShow: state.movie,
 });
 
-const mapDispatchToProps = {show, detailshow};
+// const mapDispatchToProps = {show, detailshow};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+export default connect(mapStateToProps)(LandingPage);

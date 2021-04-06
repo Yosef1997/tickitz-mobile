@@ -31,6 +31,7 @@ export default class app extends Component {
           <TextInput
             {...this.props}
             style={styles.passInput}
+            value={this.props.value}
             placeholder={this.props.placeholder}
             onChangeText={this.props.onChangeText}
             secureTextEntry={this.state.secureTextEntry}

@@ -10,6 +10,7 @@ export default class app extends Component {
           style={styles.emailInput}
           placeholder={'Write your email'}
           keyboardType="email-address"
+          value={this.props.value}
           onChangeText={this.props.onChangeText}
         />
         <Text>{this.props.email}</Text>

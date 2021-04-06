@@ -6,29 +6,53 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import TickitzLogo from '../assets/TickitzLogo.png';
 import InputEmail from '../components/InputEmail';
 import InputPass from '../components/InputPassword';
+import Button from '../components/Button';
 import GoogleIcon from '../assets/googleicon.png';
 import FacebookIcon from '../assets/facebookicon.png';
+import {Formik} from 'formik';
 import {connect} from 'react-redux';
 import {signup} from '../components/Redux/Action/auth';
 
 class SignUp extends Component {
   state = {
-    email: '',
-    password: '',
+    isLoading: false,
+    isMessage: false,
   };
-  doSignUp = async () => {
+  registerValidation(values) {
+    const errors = {};
+    const {email, password} = values;
+
+    if (!email && email === '') {
+      errors.msg = 'Email Required';
+    } else if (!password) {
+      errors.msg = 'Password Required';
+    } else if (password.length < 8) {
+      errors.msg = 'Password have at least 8 characters';
+    }
+    return errors;
+  }
+
+  async doSignUp(values) {
+    this.setState({isLoading: true});
     const {email, password} = this.state;
     console.log(email, password);
-    await this.props.signup(email, password);
+    await this.props.signup({email: values.email, password: values.password});
+    setTimeout(() => {
+      this.setState({isLoading: false, isMessage: true});
+    }, 1000);
+    setTimeout(() => {
+      this.setState({isMessage: false});
+    }, 5000);
     if (this.props.auth.message !== null) {
       this.props.navigation.navigate('SignIn');
     }
     console.log(this.state);
-  };
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -38,7 +62,65 @@ class SignUp extends Component {
         <View>
           <Text style={styles.signup}>Sign Up</Text>
         </View>
-        <View style={styles.form}>
+        <Formik
+          initialValues={{email: '', password: ''}}
+          validate={(values) => this.registerValidation(values)}
+          onSubmit={(values, {resetForm}) => {
+            this.setState({isLoading: true});
+            this.doSignUp(values);
+            setTimeout(() => {
+              resetForm();
+            }, 500);
+          }}>
+          {({values, errors, handleChange, handleBlur, handleSubmit}) => (
+            <>
+              <View style={styles.form}>
+                <Text style={styles.formlabel}>Email</Text>
+                <InputEmail
+                  value={values.email}
+                  onBlur={handleBlur('email')}
+                  onChangeText={handleChange('email')}
+                />
+              </View>
+              <View>
+                <Text style={styles.formlabel}>Password</Text>
+                <InputPass
+                  placeholder="Write your password"
+                  onBlur={handleBlur('password')}
+                  onChangeText={handleChange('password')}
+                />
+                {errors.msg ? (
+                  <Text style={styles.textError}>{errors.msg}</Text>
+                ) : null}
+                {this.props.auth.message && this.state.isMessage ? (
+                  <Text style={styles.textsuccess}>
+                    {this.props.auth.authMessage}
+                  </Text>
+                ) : null}
+                {this.props.auth.errorMsg && this.state.isMessage ? (
+                  <Text style={styles.textError}>
+                    {this.props.auth.errorMessage}
+                  </Text>
+                ) : null}
+                {this.state.isLoading ? (
+                  <View>
+                    <ActivityIndicator size="large" />
+                  </View>
+                ) : (
+                  <Button disabled={errors.msg} onPress={handleSubmit}>
+                    Join for free
+                  </Button>
+                )}
+              </View>
+              {/* <TouchableOpacity
+                onPress={this.doSignUp}
+                style={styles.btnsignup}>
+                <Text style={styles.btnfont}>Join for free</Text>
+              </TouchableOpacity> */}
+            </>
+          )}
+        </Formik>
+        {/* <View style={styles.form}>
           <Text style={styles.formlabel}>Email</Text>
           <InputEmail onChangeText={(email) => this.setState({email})} />
         </View>
@@ -48,10 +130,10 @@ class SignUp extends Component {
             placeholder="Write your password"
             onChangeText={(password) => this.setState({password})}
           />
-        </View>
-        <TouchableOpacity onPress={this.doSignUp} style={styles.btnsignup}>
+        </View> */}
+        {/* <TouchableOpacity onPress={this.doSignUp} style={styles.btnsignup}>
           <Text style={styles.btnfont}>Join for free</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View style={styles.tologin}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('SignIn')}>
@@ -156,6 +238,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: 20,
     width: 20,
+  },
+  textError: {
+    // fontFamily: 'Roboto-Reguler',
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  textsuccess: {
+    fontSize: 16,
+    color: '#00D16C',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
 

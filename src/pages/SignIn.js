@@ -14,7 +14,7 @@ import GoogleIcon from '../assets/googleicon.png';
 import FacebookIcon from '../assets/facebookicon.png';
 import {connect} from 'react-redux';
 import {signin, detailUser} from '../components/Redux/Action/auth';
-import {show} from '../components/Redux/Action/movie';
+import {show} from '../components/Redux/Action/auth';
 
 class SignIn extends Component {
   state = {
