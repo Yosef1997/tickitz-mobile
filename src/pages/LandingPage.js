@@ -14,19 +14,16 @@ import CardShow from '../components/CardNowShowing';
 import BtnMonth from '../components/BtnMonth';
 import CardUpcoming from '../components/CardUpcoming';
 import {connect} from 'react-redux';
-// import {show, detailshow} from '../components/Redux/Action/movie';
+import {allMovie, detailMovie} from '../components/Redux/Action/movie';
 // import {date, location, time} from '../components/Redux/Action/cinema';
 import {REACT_APP_API_URL as API_URL} from '@env';
 
 class LandingPage extends Component {
-  // async componentDidMount() {
-  //   await this.props.show();
-  // }
+  async componentDidMount() {
+    await this.props.allMovie(this.props.auth.token);
+  }
   goToDetail = async (id) => {
-    await this.props.detailshow(id);
-    // await this.props.date();
-    // await this.props.location();
-    // await this.props.time();
+    await this.props.detailMovie(this.props.auth.token, id);
     this.props.navigation.navigate('MovDetail');
   };
   render() {
@@ -42,19 +39,19 @@ class LandingPage extends Component {
                 <Text style={styles.text2}> view all </Text>
               </TouchableOpacity>
             </View>
-            {/* <FlatList
+            <FlatList
               horizontal
-              data={this.props.nowShow.movie}
+              data={this.props.movie.allMovie}
               keyExtractor={(item, index) => String(item.id)}
               renderItem={({item}) => {
                 return (
                   <CardShow
-                    source={{uri: API_URL.concat(`/${item.picture}`)}}
+                    source={{uri: `${API_URL}/upload/movie/${item.picture}`}}
                     onPress={() => this.goToDetail(item.id)}
                   />
                 );
               }}
-            /> */}
+            />
           </View>
           <View style={styles.Upcomingsection}>
             <View style={styles.Upcomingheader}>
@@ -132,9 +129,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  nowShow: state.movie,
+  auth: state.auth,
+  movie: state.movie,
 });
 
-// const mapDispatchToProps = {show, detailshow};
+const mapDispatchToProps = {allMovie, detailMovie};
 
-export default connect(mapStateToProps)(LandingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

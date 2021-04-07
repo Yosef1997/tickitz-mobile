@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import Detail from '../components/DetailMovie';
 import Footer from '../components/Footer';
-import DropdownDate from '../components/BtnDropdownDate';
-import DropdownLocation from '../components/BtnDropdownLocation';
-import CardCinema from '../components/CardCinema';
+// import DropdownDate from '../components/BtnDropdownDate';
+// import DropdownLocation from '../components/BtnDropdownLocation';
+// import CardCinema from '../components/CardCinema';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {REACT_APP_API_URL as API_URL} from '@env';
@@ -45,23 +45,24 @@ class MovieDetail extends Component {
     this.props.navigation.navigate('Order');
   };
   render() {
+    // const {detailMovie} = this.props.movie;
     return (
       <ScrollView style={styles.container}>
         <Detail
           source={{
-            uri: API_URL.concat(`/${this.props.movie.detailmovie.picture}`),
+            uri: `${API_URL}/upload/movie/${this.props.movie.detailMovie.picture}`,
           }}
-          title={this.props.movie.detailmovie.name}
-          genre={this.props.movie.detailmovie.genre}
-          date={moment(this.props.movie.detailmovie.releaseDate).format(
+          title={this.props.movie.detailMovie.name}
+          genre={this.props.movie.detailMovie.genre}
+          date={moment(this.props.movie.detailMovie.releaseDate).format(
             'MMMM D, YYYY',
           )}
-          director={this.props.movie.detailmovie.director}
-          duration={this.props.movie.detailmovie.duration}
-          actor={this.props.movie.detailmovie.stars}
-          synopsis={this.props.movie.detailmovie.description}
+          director={this.props.movie.detailMovie.director}
+          duration={this.props.movie.detailMovie.duration}
+          actor={this.props.movie.detailMovie.star}
+          synopsis={this.props.movie.detailMovie.description}
         />
-        <View style={styles.container3}>
+        {/* <View style={styles.container3}>
           <Text style={styles.text1}>Showtimes and Tickets</Text>
           <DropdownDate
             icon="calendar"
@@ -91,7 +92,7 @@ class MovieDetail extends Component {
               />
             )}
           />
-        </View>
+        </View> */}
         <Footer />
       </ScrollView>
     );
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   movie: state.movie,
-  listcinema: state.cinema,
+  // listcinema: state.cinema,
 });
 
 // const mapDispatchToProps = {cinema, detailcinema, detaildate, detaillocation};

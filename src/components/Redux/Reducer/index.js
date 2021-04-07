@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer} from 'redux-persist';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import authReducer from './auth';
-// import movieReducer from './movie';
+import movieReducer from './movie';
 // import cinemaReducer from './cinema';
 
 const authConfig = {
@@ -14,7 +14,7 @@ const authConfig = {
 
 const reducers = combineReducers({
   auth: persistReducer(authConfig, authReducer),
-  // movie: movieReducer,
+  movie: movieReducer,
   // cinema: cinemaReducer,
 });
 
