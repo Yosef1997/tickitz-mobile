@@ -24,6 +24,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: {...state.user, ...action.payload},
+        message: action.message,
       };
     }
     case 'SET_AUTH_MESSAGE': {

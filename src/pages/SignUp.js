@@ -101,17 +101,14 @@ class SignUp extends Component {
                     {this.props.auth.errorMsg}
                   </Text>
                 ) : null}
-                {this.state.isLoading ? (
-                  <View>
-                    <ActivityIndicator size="large" />
-                  </View>
-                ) : (
-                  <View style={styles.formBtn}>
-                    <Button disabled={errors.msg} onPress={handleSubmit}>
-                      Join for free
-                    </Button>
-                  </View>
-                )}
+                {this.state.isLoading === true ? (
+                  <ActivityIndicator size="large" />
+                ) : null}
+                <View style={styles.formBtn}>
+                  <Button disabled={errors.msg} onPress={handleSubmit}>
+                    Join for free
+                  </Button>
+                </View>
               </View>
             </>
           )}

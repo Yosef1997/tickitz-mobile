@@ -17,6 +17,7 @@ export default class app extends Component {
           style={styles.emailInput}
           placeholder={this.props.placeholder}
           onChangeText={this.props.onChangeText}
+          value={this.props.value}
           keyboardType={this.props.keyboardType}
         />
       </View>

@@ -56,24 +56,28 @@ export const signin = (email, password) => {
   };
 };
 
-export const updateUser = (token, id, data) => {
+export const updateUser = (token, data) => {
   return async (dispatch) => {
     try {
       const form = new FormData();
       Object.keys(data).forEach((key) => {
-        form.append(key, key[data]);
+        form.append(key, data[key]);
       });
+      console.log(form, '<<<<<<<<<<<<<<<<<<<form');
       dispatch({
         type: 'SET_AUTH_MESSAGE',
         payload: '',
       });
-      const results = await http().patch(`/auth/profile/${id}`, form);
+      const results = await http(token).patch('/user/profile', form);
       dispatch({
         type: 'UPDATE_USER',
         payload: results.data.results,
+        message: results.data.message,
       });
     } catch (err) {
+      console.log(err);
       const {message} = err.response.data;
+
       dispatch({
         type: 'SET_AUTH_MESSAGE',
         payload: message,
