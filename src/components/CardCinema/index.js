@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {Image, Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {detailTime} from '../Redux/Action/showTime';
 import {connect} from 'react-redux';
 
 class index extends Component {
-  async componentDidMount() {
-    await this.props.time();
-  }
+  // async componentDidMount() {
+  //   await this.props.time();
+  // }
   selectTime = async (id) => {
-    await this.props.detailtime(id);
+    await this.props.detailTime(this.props.auth.token, id);
   };
   render() {
     return (
@@ -16,8 +17,8 @@ class index extends Component {
           <Image source={this.props.source} style={styles.poster} />
           <Text style={styles.text1}>{this.props.address}</Text>
         </View>
-        {/* <View style={styles.timecontainer}>
-          {this.props.showtime.time.map((item) => {
+        <View style={styles.timecontainer}>
+          {this.props.movie.allTime.map((item) => {
             return (
               <TouchableOpacity
                 key={String(item.id)}
@@ -26,7 +27,7 @@ class index extends Component {
               </TouchableOpacity>
             );
           })}
-        </View> */}
+        </View>
         <View style={styles.timecontainer}>
           <Text style={styles.text3}>Price</Text>
           <Text style={styles.text4}>${this.props.price}/seat</Text>
@@ -130,7 +131,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  showtime: state.cinema,
+  auth: state.auth,
+  movie: state.movie,
 });
-
-export default connect(mapStateToProps)(index);
+const mapDispatchToProps = {detailTime};
+export default connect(mapStateToProps, mapDispatchToProps)(index);

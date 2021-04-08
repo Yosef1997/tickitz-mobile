@@ -8,23 +8,23 @@ import {
   FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
+import moment from 'moment';
 import {connect} from 'react-redux';
+import {detailDate} from '../Redux/Action/showTime';
 
 class index extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      pickerSelection: this.props.label,
+      pickerSelection: this.props.date,
       pickerDisplayed: false,
     };
   }
-
-  setPickerValue(newValue, id) {
+  async pickDate(newValue, id) {
     this.setState({
-      pickerSelection: newValue,
+      pickerSelection: `${moment(newValue).format('MMMM D, YYYY')}`,
     });
-    this.props.detaildate(id);
+    await this.props.detailDate(this.props.auth.token, id);
     this.togglePicker();
   }
 
@@ -40,7 +40,7 @@ class index extends Component {
         <TouchableOpacity
           onPress={() => this.togglePicker()}
           style={styles.btnDropdown}>
-          <Icon name={this.props.icon} size={18} />
+          <Icon name="calendar" size={18} />
           <Text style={styles.text1}>{this.state.pickerSelection}</Text>
           <Icon name="chevron-small-down" size={18} />
         </TouchableOpacity>
@@ -52,9 +52,18 @@ class index extends Component {
             <Text>{this.state.pickerSelection}</Text>
             <View style={styles.pickerset}>
               <FlatList
-                data={this.props.data}
-                keyExtractor={this.props.keyExtractor}
-                renderItem={this.props.renderItem}
+                data={this.props.movie.allDate}
+                keyExtractor={(item) => String(item.id)}
+                renderItem={({item}) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => this.pickDate(item.date, item.id)}>
+                      <Text>{`${moment(item.date).format(
+                        'MMMM D, YYYY',
+                      )}`}</Text>
+                    </TouchableOpacity>
+                  );
+                }}
               />
             </View>
             <TouchableOpacity onPress={() => this.togglePicker()}>
@@ -115,7 +124,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  cinema: state.cinema,
+  auth: state.auth,
+  movie: state.movie,
 });
-
-export default connect(mapStateToProps)(index);
+const mapDispatchToProps = {detailDate};
+export default connect(mapStateToProps, mapDispatchToProps)(index);

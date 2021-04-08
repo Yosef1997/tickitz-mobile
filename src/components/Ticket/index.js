@@ -6,6 +6,7 @@ import moment from 'moment';
 
 class index extends Component {
   render() {
+    const {order} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.rowQR}>
@@ -18,7 +19,7 @@ class index extends Component {
           <Text style={styles.text1}>Category</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.text2}>{this.props.movie.detailmovie.name}</Text>
+          <Text style={styles.text2}>{order.detailMovie.name}</Text>
           <Text style={styles.text2}>PG-13</Text>
         </View>
         <View style={styles.row}>
@@ -27,9 +28,9 @@ class index extends Component {
         </View>
         <View style={styles.row}>
           <Text style={styles.text2}>
-            {moment(this.props.cinema.idDate.date).format('D MMMM')}
+            {moment(order.detailDate.date).format('D MMMM')}
           </Text>
-          <Text style={styles.text2}>{this.props.cinema.idTime.time}</Text>
+          <Text style={styles.text2}>{order.detailTime.time}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.text1}>Count</Text>
@@ -124,8 +125,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  movie: state.movie,
-  cinema: state.cinema,
+  order: state.order,
 });
 
 export default connect(mapStateToProps)(index);

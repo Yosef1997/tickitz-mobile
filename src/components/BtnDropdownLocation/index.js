@@ -9,25 +9,21 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
+import {detailLocation} from '../Redux/Action/showTime';
 
 class index extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      pickerSelection: this.props.label,
+      pickerSelection: this.props.location,
       pickerDisplayed: false,
     };
   }
-
-  async componentDidMount() {
-    await this.props.location();
-  }
-
-  setPickerValue(newValue, id) {
+  async pickLocation(newValue, id) {
     this.setState({
       pickerSelection: newValue,
     });
+    await this.props.detailLocation(this.props.auth.token, id);
     this.togglePicker();
   }
 
@@ -43,7 +39,7 @@ class index extends Component {
         <TouchableOpacity
           onPress={() => this.togglePicker()}
           style={styles.btnDropdown}>
-          <Icon name={this.props.icon} size={18} />
+          <Icon name="location" size={18} />
           <Text style={styles.text1}>{this.state.pickerSelection}</Text>
           <Icon name="chevron-small-down" size={18} />
         </TouchableOpacity>
@@ -55,9 +51,16 @@ class index extends Component {
             <Text>{this.state.pickerSelection}</Text>
             <View style={styles.pickerset}>
               <FlatList
-                data={this.props.data}
-                keyExtractor={this.props.keyExtractor}
-                renderItem={this.props.renderItem}
+                data={this.props.movie.allLocation}
+                keyExtractor={(item, index) => String(item.id)}
+                renderItem={({item}) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => this.pickLocation(item.name, item.id)}>
+                      <Text>{item.name}</Text>
+                    </TouchableOpacity>
+                  );
+                }}
               />
             </View>
             <TouchableOpacity onPress={() => this.togglePicker()}>
@@ -118,7 +121,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  cinema: state.cinema,
+  auth: state.auth,
+  movie: state.movie,
 });
-
-export default connect(mapStateToProps)(index);
+const mapDispatchToProps = {detailLocation};
+export default connect(mapStateToProps, mapDispatchToProps)(index);

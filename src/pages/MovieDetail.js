@@ -6,13 +6,13 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import Detail from '../components/DetailMovie';
 import Footer from '../components/Footer';
-// import DropdownDate from '../components/BtnDropdownDate';
-// import DropdownLocation from '../components/BtnDropdownLocation';
-// import CardCinema from '../components/CardCinema';
-
+import DropdownDate from '../components/BtnDropdownDate';
+import DropdownLocation from '../components/BtnDropdownLocation';
+import CardCinema from '../components/CardCinema';
 import moment from 'moment';
 import {REACT_APP_API_URL as API_URL} from '@env';
 import {connect} from 'react-redux';
@@ -20,39 +20,28 @@ import {
   detailDate,
   detailLocation,
   detailCinema,
-  detailTime,
 } from '../components/Redux/Action/showTime';
 
 class MovieDetail extends Component {
   state = {
     date: 'Set a date',
-    location: 'Set a location',
+    location: 'Set a city',
   };
-  // async componentDidMount() {
-  // await this.props.cinema();
-  // await this.props.date();
-  // await this.props.location();
-  // }
-  // setDate(newValue, id) {
-  //   this.setState({
-  //     date: newValue,
-  //   });
-  //   this.props.detaildate(id);
-  //   // this.togglePicker();
-  // }
-  // setLocation(newValue, id) {
-  //   this.setState({
-  //     date: newValue,
-  //   });
-  //   this.props.detaillocation(id);
-  //   // this.togglePicker();
-  // }
-  goToOrder = async (id) => {
-    await this.props.detailcinema(id);
+  async setDate(newValue, id) {
+    this.setState({
+      date: newValue,
+    });
+    await this.props.detailDate(this.props.auth.token, id);
+    this.togglePicker();
+  }
+  async setCinema(id) {
+    await this.props.detailCinema(this.props.auth.token, id);
     this.props.navigation.navigate('Order');
-  };
+  }
+
   render() {
     const {detailMovie} = this.props.order;
+    const {movie} = this.props;
     return (
       <ScrollView style={styles.container}>
         <Detail
@@ -67,37 +56,27 @@ class MovieDetail extends Component {
           actor={detailMovie.star}
           synopsis={detailMovie.description}
         />
-        {/* <View style={styles.container3}>
+        <View style={styles.container3}>
           <Text style={styles.text1}>Showtimes and Tickets</Text>
-          <DropdownDate
-            icon="calendar"
-            label={this.state.date}
-            data={this.props.listcinema.date}
-            keyExtractor={(item, index) => String(item.id)}
-            renderItem={({item}) => {
-              return (
-                <TouchableOpacity onPress={this.setDate(item.date, item.id)}>
-                  <Text>{`${moment(item.date).format('MMMM D, YYYY')}`}</Text>
-                </TouchableOpacity>
-              );
-            }}
-          />
-          <DropdownLocation icon="location" label="Set a city" />
+
+          <DropdownDate icon="calendar" date={this.state.date} />
+
+          <DropdownLocation icon="location" location={this.state.location} />
         </View>
         <View style={styles.container2}>
           <FlatList
-            data={this.props.listcinema.cinema}
+            data={movie.allCinema}
             keyExtractor={(item) => String(item.id)}
             renderItem={({item}) => (
               <CardCinema
-                source={{uri: API_URL.concat(`/${item.picture}`)}}
+                source={{uri: `${API_URL}/upload/cinema/${item.picture}`}}
                 address={item.address}
                 price={item.price}
-                onPress={() => this.goToOrder(item.id)}
+                onPress={() => this.setCinema(item.id)}
               />
             )}
           />
-        </View> */}
+        </View>
         <Footer />
       </ScrollView>
     );
@@ -127,6 +106,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  auth: state.auth,
   movie: state.movie,
   order: state.order,
 });
@@ -135,6 +115,5 @@ const mapDispatchToProps = {
   detailDate,
   detailLocation,
   detailCinema,
-  detailTime,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);
