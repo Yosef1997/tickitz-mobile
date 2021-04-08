@@ -15,7 +15,12 @@ import BtnMonth from '../components/BtnMonth';
 import CardUpcoming from '../components/CardUpcoming';
 import {connect} from 'react-redux';
 import {allMovie, detailMovie} from '../components/Redux/Action/movie';
-// import {date, location, time} from '../components/Redux/Action/cinema';
+import {
+  allDate,
+  allLocation,
+  allCinema,
+  allTime,
+} from '../components/Redux/Action/showTime';
 import {REACT_APP_API_URL as API_URL} from '@env';
 
 class LandingPage extends Component {
@@ -24,6 +29,10 @@ class LandingPage extends Component {
   }
   goToDetail = async (id) => {
     await this.props.detailMovie(this.props.auth.token, id);
+    await this.props.allDate(this.props.auth.token);
+    await this.props.allLocation(this.props.auth.token);
+    await this.props.allCinema(this.props.auth.token);
+    await this.props.allTime(this.props.auth.token);
     this.props.navigation.navigate('MovDetail');
   };
   render() {
@@ -133,6 +142,13 @@ const mapStateToProps = (state) => ({
   movie: state.movie,
 });
 
-const mapDispatchToProps = {allMovie, detailMovie};
+const mapDispatchToProps = {
+  allMovie,
+  detailMovie,
+  allDate,
+  allLocation,
+  allCinema,
+  allTime,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

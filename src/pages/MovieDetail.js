@@ -12,20 +12,27 @@ import Footer from '../components/Footer';
 // import DropdownDate from '../components/BtnDropdownDate';
 // import DropdownLocation from '../components/BtnDropdownLocation';
 // import CardCinema from '../components/CardCinema';
-import {connect} from 'react-redux';
+
 import moment from 'moment';
 import {REACT_APP_API_URL as API_URL} from '@env';
+import {connect} from 'react-redux';
+import {
+  detailDate,
+  detailLocation,
+  detailCinema,
+  detailTime,
+} from '../components/Redux/Action/showTime';
 
 class MovieDetail extends Component {
   state = {
     date: 'Set a date',
     location: 'Set a location',
   };
-  async componentDidMount() {
-    // await this.props.cinema();
-    // await this.props.date();
-    // await this.props.location();
-  }
+  // async componentDidMount() {
+  // await this.props.cinema();
+  // await this.props.date();
+  // await this.props.location();
+  // }
   // setDate(newValue, id) {
   //   this.setState({
   //     date: newValue,
@@ -45,22 +52,20 @@ class MovieDetail extends Component {
     this.props.navigation.navigate('Order');
   };
   render() {
-    // const {detailMovie} = this.props.movie;
+    const {detailMovie} = this.props.order;
     return (
       <ScrollView style={styles.container}>
         <Detail
           source={{
-            uri: `${API_URL}/upload/movie/${this.props.movie.detailMovie.picture}`,
+            uri: `${API_URL}/upload/movie/${detailMovie.picture}`,
           }}
-          title={this.props.movie.detailMovie.name}
-          genre={this.props.movie.detailMovie.genre}
-          date={moment(this.props.movie.detailMovie.releaseDate).format(
-            'MMMM D, YYYY',
-          )}
-          director={this.props.movie.detailMovie.director}
-          duration={this.props.movie.detailMovie.duration}
-          actor={this.props.movie.detailMovie.star}
-          synopsis={this.props.movie.detailMovie.description}
+          title={detailMovie.name}
+          genre={detailMovie.genre}
+          date={moment(detailMovie.releaseDate).format('MMMM D, YYYY')}
+          director={detailMovie.director}
+          duration={detailMovie.duration}
+          actor={detailMovie.star}
+          synopsis={detailMovie.description}
         />
         {/* <View style={styles.container3}>
           <Text style={styles.text1}>Showtimes and Tickets</Text>
@@ -123,8 +128,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   movie: state.movie,
-  // listcinema: state.cinema,
+  order: state.order,
 });
 
-// const mapDispatchToProps = {cinema, detailcinema, detaildate, detaillocation};
-export default connect(mapStateToProps)(MovieDetail);
+const mapDispatchToProps = {
+  detailDate,
+  detailLocation,
+  detailCinema,
+  detailTime,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);

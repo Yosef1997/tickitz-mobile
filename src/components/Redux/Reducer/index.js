@@ -4,7 +4,7 @@ import {persistReducer} from 'redux-persist';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import authReducer from './auth';
 import movieReducer from './movie';
-// import cinemaReducer from './cinema';
+import orderReducer from './order';
 
 const authConfig = {
   key: 'auth',
@@ -15,7 +15,7 @@ const authConfig = {
 const reducers = combineReducers({
   auth: persistReducer(authConfig, authReducer),
   movie: movieReducer,
-  // cinema: cinemaReducer,
+  order: orderReducer,
 });
 
 export default reducers;

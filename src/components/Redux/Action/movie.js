@@ -27,7 +27,7 @@ export const detailMovie = (token, id) => {
   return async (dispatch) => {
     try {
       dispatch({
-        type: 'SET_MOVIE_MESSAGE',
+        type: 'SHOWTIME_MESSAGE',
         payload: '',
       });
       const results = await http(token).get(`/movie/${id}`);
@@ -39,7 +39,7 @@ export const detailMovie = (token, id) => {
       console.log(err);
       const {message} = err.response.data;
       dispatch({
-        type: 'SET_MOVIE_MESSAGE',
+        type: 'SHOWTIME_MESSAGE',
         payload: message,
       });
     }
