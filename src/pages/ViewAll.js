@@ -4,15 +4,21 @@ import {connect} from 'react-redux';
 import {REACT_APP_API_URL as API_URL} from '@env';
 import CardPoster from '../components/CardNowShowing';
 import SearchBar from '../components/InputViewAll';
-// import {detailshow} from '../components/Redux/Action/movie';
-// import {date, location, time} from '../components/Redux/Action/cinema';
+import {detailMovie} from '../components/Redux/Action/movie';
+import {
+  allDate,
+  allLocation,
+  allCinema,
+  allTime,
+} from '../components/Redux/Action/showTime';
 
 class ViewAll extends Component {
   goToDetail = async (id) => {
-    await this.props.detailshow(id);
-    await this.props.date();
-    await this.props.location();
-    await this.props.time();
+    await this.props.detailMovie(this.props.auth.token, id);
+    await this.props.allDate(this.props.auth.token);
+    await this.props.allLocation(this.props.auth.token);
+    await this.props.allCinema(this.props.auth.token);
+    await this.props.allTime(this.props.auth.token);
     this.props.navigation.navigate('MovDetail');
   };
   render() {
@@ -25,20 +31,20 @@ class ViewAll extends Component {
             keyboardType="default"
           />
         </View>
-        {/* <FlatList
-          data={this.props.poster.movie}
-          keyExtractor={(item, index) => String(item.id)}
+        <FlatList
+          data={this.props.movie.allMovie}
+          keyExtractor={(item) => String(item.id)}
           renderItem={({item}) => {
             return (
               <View style={styles.container}>
                 <CardPoster
-                  source={{uri: API_URL.concat(`/${item.picture}`)}}
+                  source={{uri: `${API_URL}/upload/movie/${item.picture}`}}
                   onPress={() => this.goToDetail(item.id)}
                 />
               </View>
             );
           }}
-        /> */}
+        />
       </React.Fragment>
     );
   }
@@ -60,7 +66,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  poster: state.movie,
+  auth: state.auth,
+  movie: state.movie,
 });
-// const mapDispatchToProps = {detailshow, date, location, time};
-export default connect(mapStateToProps)(ViewAll);
+const mapDispatchToProps = {
+  allDate,
+  allLocation,
+  allCinema,
+  allTime,
+  detailMovie,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ViewAll);
