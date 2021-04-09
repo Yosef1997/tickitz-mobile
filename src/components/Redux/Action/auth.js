@@ -63,7 +63,6 @@ export const updateUser = (token, data) => {
       Object.keys(data).forEach((key) => {
         form.append(key, data[key]);
       });
-      console.log(form, '<<<<<<<<<<<<<<<<<<<form');
       dispatch({
         type: 'SET_AUTH_MESSAGE',
         payload: '',
@@ -71,6 +70,35 @@ export const updateUser = (token, data) => {
       const results = await http(token).patch('/user/profile', form);
       dispatch({
         type: 'UPDATE_USER',
+        payload: results.data.results,
+        message: results.data.message,
+      });
+    } catch (err) {
+      console.log(err);
+      const {message} = err.response.data;
+
+      dispatch({
+        type: 'SET_AUTH_MESSAGE',
+        payload: message,
+      });
+    }
+  };
+};
+
+export const deletePicture = (token, data) => {
+  return async (dispatch) => {
+    try {
+      const form = new FormData();
+      Object.keys(data).forEach((key) => {
+        form.append(key, data[key]);
+      });
+      dispatch({
+        type: 'SET_AUTH_MESSAGE',
+        payload: '',
+      });
+      const results = await http(token).delete('/user/delete', form);
+      dispatch({
+        type: 'DELETE_PICTURE',
         payload: results.data.results,
         message: results.data.message,
       });

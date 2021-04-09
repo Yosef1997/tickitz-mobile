@@ -11,7 +11,7 @@ import {
 import Profil from '../../assets/profil.png';
 import Star from '../../assets/Vector.png';
 import {connect} from 'react-redux';
-import {updateUser} from '../Redux/Action/auth';
+import {updateUser, deletePicture} from '../Redux/Action/auth';
 import {REACT_APP_API_URL as API_URL} from '@env';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
@@ -92,6 +92,12 @@ class index extends Component {
       }
     });
   };
+  deletePicture = async () => {
+    await this.props.deletePicture(this.props.auth.token, {
+      id: this.props.auth.user.id,
+    });
+    this.setState({modalVisible: false, message: 'Image has deleted'});
+  };
   render() {
     const {user} = this.props.auth;
     return (
@@ -128,7 +134,7 @@ class index extends Component {
                 <View style={styles.gap} />
                 <TouchableOpacity
                   style={[styles.button, styles.buttonDelete]}
-                  onPress={() => this.deletePhoto()}>
+                  onPress={() => this.deletePicture()}>
                   <Text style={styles.textStyle}>Delete Photo Profile</Text>
                 </TouchableOpacity>
                 <View style={styles.gap} />
@@ -350,5 +356,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
-const mapDispatchToProps = {updateUser};
+const mapDispatchToProps = {updateUser, deletePicture};
 export default connect(mapStateToProps, mapDispatchToProps)(index);
