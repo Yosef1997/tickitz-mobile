@@ -26,7 +26,8 @@ class index extends Component {
     return (
       <View>
         <View style={styles.container}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Home')}>
             <Image source={Logo} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.OnIconPress}>
