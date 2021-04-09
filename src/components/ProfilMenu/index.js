@@ -5,13 +5,12 @@ export default class index extends Component {
   render() {
     return (
       <View style={sytles.container}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Profile')}>
+        <TouchableOpacity onPress={this.props.Profile}>
           <View style={sytles.btn}>
             <Text style={sytles.btntext}>Details Account</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.props.onPress}>
+        <TouchableOpacity onPress={this.props.History}>
           <View>
             <Text style={sytles.btntext}>Order History</Text>
           </View>

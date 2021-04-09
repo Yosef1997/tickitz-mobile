@@ -9,7 +9,7 @@ export default class History extends Component {
   render() {
     return (
       <ScrollView>
-        <ProfilMenu />
+        <ProfilMenu Profile={() => this.props.navigation.navigate('Profil')} />
         <CardHistory
           image={Theater}
           date={'Tuesday, 07 July 2020'}

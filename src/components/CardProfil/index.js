@@ -1,11 +1,85 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Modal,
+} from 'react-native';
 import Profil from '../../assets/profil.png';
 import Star from '../../assets/Vector.png';
 import {connect} from 'react-redux';
+import {updateUser} from '../Redux/Action/auth';
 import {REACT_APP_API_URL as API_URL} from '@env';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
 class index extends Component {
+  state = {
+    isLoading: false,
+    modalVisible: false,
+  };
+  addPhotoCamera = () => {
+    this.setState({loading: true, modalVisible: false});
+    launchCamera(
+      {
+        quality: 0.3,
+      },
+      async (response) => {
+        if (response.didCancel) {
+          showMessage('User cancelled upload image');
+          this.setState({loading: false});
+        } else if (response.errorMessage) {
+          showMessage('Image Error: ', response.errorMessage);
+          this.setState({loading: false});
+        } else if (response.fileSize >= 1 * 1024 * 1024) {
+          showMessage('Image to large');
+          this.setState({loading: false});
+        } else {
+          const dataImage = {
+            uri: response.uri,
+            type: response.type,
+            name: response.fileName,
+          };
+          await this.props.updateUser(
+            this.props.auth.token,
+            this.props.auth.user.id,
+            {file: dataImage},
+          );
+          this.setState({loading: false});
+          showMessage(this.props.auth.message, 'success');
+        }
+      },
+    );
+  };
+  addPhotoGallery = () => {
+    this.setState({loading: true, modalVisible: false});
+    launchImageLibrary({}, async (response) => {
+      if (response.didCancel) {
+        showMessage('User cancelled upload image');
+        this.setState({loading: false});
+      } else if (response.errorMessage) {
+        showMessage('Image Error: ', response.errorMessage);
+        this.setState({loading: false});
+      } else if (response.fileSize >= 1 * 1024 * 1024) {
+        showMessage('Image to large');
+        this.setState({loading: false});
+      } else {
+        const dataImage = {
+          uri: response.uri,
+          type: response.type,
+          name: response.fileName,
+        };
+        await this.props.updateUser(
+          this.props.auth.token,
+          this.props.auth.user.id,
+          {file: dataImage},
+        );
+        this.setState({loading: false});
+        showMessage(this.props.auth.message, 'success');
+      }
+    });
+  };
   render() {
     const {user} = this.props.auth;
     return (
@@ -19,6 +93,35 @@ class index extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.row2}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              this.setModalVisible(!this.state.modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonLink]}
+                  onPress={() => this.addPhotoCamera()}>
+                  <Text style={styles.textStyle}>Camera</Text>
+                </TouchableOpacity>
+                <View style={styles.gap} />
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonLink]}
+                  onPress={() => this.addPhotoGallery()}>
+                  <Text style={styles.textStyle}>Gallery</Text>
+                </TouchableOpacity>
+                <View style={styles.gap} />
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonDelete]}
+                  onPress={() => this.deletePhoto()}>
+                  <Text style={styles.textStyle}>Delete Photo Profile</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
           {user.picture !== null ? (
             <TouchableOpacity>
               <Image
@@ -195,5 +298,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
-
-export default connect(mapStateToProps)(index);
+const mapDispatchToProps = {updateUser};
+export default connect(mapStateToProps, mapDispatchToProps)(index);

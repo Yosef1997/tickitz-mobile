@@ -10,7 +10,7 @@ export default class Profil extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <ProfilMenu onPress={() => this.props.navigation.navigate('History')} />
+        <ProfilMenu History={() => this.props.navigation.navigate('History')} />
         <CardProfil />
         <CardProfilData />
         {/* <CardPass /> */}

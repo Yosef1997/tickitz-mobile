@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
+import {LogBox} from 'react-native';
+import {Text, View, ScrollView, StyleSheet, FlatList} from 'react-native';
 import Detail from '../components/DetailMovie';
 import Footer from '../components/Footer';
 import DropdownDate from '../components/BtnDropdownDate';
@@ -27,6 +20,9 @@ class MovieDetail extends Component {
     date: 'Set a date',
     location: 'Set a city',
   };
+  componentDidMount() {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }
   async setDate(newValue, id) {
     this.setState({
       date: newValue,
@@ -86,6 +82,7 @@ class MovieDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    flex: 1,
   },
   container2: {
     paddingVertical: 50,

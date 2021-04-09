@@ -2,22 +2,21 @@ import React, {Component} from 'react';
 import {Text, View, Image, StyleSheet} from 'react-native';
 import InputCustom from '../InputCustom';
 import Icon from '../../assets/warning.png';
+import {connect} from 'react-redux';
 
-export default class index extends Component {
+class index extends Component {
   render() {
+    const {user} = this.props.auth;
     return (
       <View style={styles.container}>
         <Text style={styles.text}> Full Name </Text>
-        <InputCustom placeholder="Jonas El Rodriguez" />
+        <InputCustom placeholder={`${user.firstName} ${user.lastName}`} />
         <Text style={styles.text}> Email </Text>
-        <InputCustom
-          placeholder="jonasrodri123@gmail.com"
-          keyboardType="email-address"
-        />
+        <InputCustom placeholder={user.email} keyboardType="email-address" />
         <Text style={styles.text}> Phone Number </Text>
         <InputCustom
           text="+62"
-          placeholder="81445687121"
+          placeholder={user.phoneNumber}
           keyboardType="numeric"
         />
         <View style={styles.group}>
@@ -57,3 +56,9 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
 });
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+const mapDispatchToProps = {};
+export default connect(mapStateToProps)(index);

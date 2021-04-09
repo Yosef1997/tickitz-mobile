@@ -3,7 +3,6 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Sort from 'react-native-vector-icons/FontAwesome';
-import {allMovie} from '../Redux/Action/movie';
 
 export default class app extends Component {
   state = {

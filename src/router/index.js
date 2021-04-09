@@ -14,12 +14,22 @@ import Navbar from '../components/Navbar';
 import ViewAll from '../pages/ViewAll';
 import {connect} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import {
+  allDate,
+  allLocation,
+  allCinema,
+  allTime,
+} from '../components/Redux/Action/showTime';
 
 const Stack = createStackNavigator();
 
 class index extends Component {
   componentDidMount() {
     setTimeout(() => {
+      this.props.allDate(this.props.auth.token);
+      this.props.allLocation(this.props.auth.token);
+      this.props.allCinema(this.props.auth.token);
+      this.props.allTime(this.props.auth.token);
       SplashScreen.hide();
     }, 3000);
   }
@@ -95,5 +105,5 @@ class index extends Component {
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
-
-export default connect(mapStateToProps)(index);
+const mapDispatchToProps = {allDate, allLocation, allCinema, allTime};
+export default connect(mapStateToProps, mapDispatchToProps)(index);
