@@ -1,13 +1,19 @@
 import http from '../../../helper/http';
 
-export const allMovie = (token) => {
+export const allMovie = (token, search, order, limit, page, sort) => {
   return async (dispatch) => {
     try {
       dispatch({
         type: 'SET_MOVIE_MESSAGE',
         payload: '',
       });
-      const results = await http(token).get('/movie');
+      const results = await http(token).get(
+        `/movie?search=${search !== undefined ? search : ''}&limit=${
+          limit !== undefined ? limit : 4
+        }&page=${page !== undefined ? page : 1}&sort=${
+          sort !== undefined ? sort : 'id'
+        }&order=${order !== undefined ? order : 'ASC'}`,
+      );
       dispatch({
         type: 'ALL_MOVIE',
         payload: results.data.results,

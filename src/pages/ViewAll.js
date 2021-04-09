@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {REACT_APP_API_URL as API_URL} from '@env';
 import CardPoster from '../components/CardNowShowing';
 import SearchBar from '../components/InputViewAll';
-import {detailMovie} from '../components/Redux/Action/movie';
+import {allMovie, detailMovie} from '../components/Redux/Action/movie';
 import {
   allDate,
   allLocation,
@@ -13,6 +13,11 @@ import {
 } from '../components/Redux/Action/showTime';
 
 class ViewAll extends Component {
+  state = {
+    search: '',
+    ascending: true,
+    sort: 'sort-amount-asc',
+  };
   goToDetail = async (id) => {
     await this.props.detailMovie(this.props.auth.token, id);
     await this.props.allDate(this.props.auth.token);
@@ -21,14 +26,49 @@ class ViewAll extends Component {
     await this.props.allTime(this.props.auth.token);
     this.props.navigation.navigate('MovDetail');
   };
+  doSearch = (search) => {
+    this.setState({search: search}, async () => {
+      await this.props.allMovie(
+        this.props.auth.token,
+        this.state.search,
+        'DESC',
+      );
+    });
+  };
+  OnIconPress = (search) => {
+    this.setState({
+      ascending: !this.state.ascending,
+    });
+    let sort = this.state.ascending ? 'sort-amount-desc' : 'sort-amount-asc';
+    this.setState({
+      sort: sort,
+    });
+    if (this.state.sort === 'sort-amount-asc') {
+      this.setState({search: search}, async () => {
+        await this.props.allMovie(
+          this.props.auth.token,
+          this.state.search,
+          'DESC',
+        );
+      });
+    } else {
+      this.setState({search: search}, async () => {
+        await this.props.allMovie(this.props.auth.token, this.state.search);
+      });
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
         <View style={styles.search}>
           <SearchBar
             Icon="search1"
+            sort={this.state.sort}
             placeholder="search"
             keyboardType="default"
+            onChangeText={(search) => this.doSearch(search)}
+            onPress={(search) => this.OnIconPress(search)}
           />
         </View>
         <FlatList
@@ -74,6 +114,7 @@ const mapDispatchToProps = {
   allLocation,
   allCinema,
   allTime,
+  allMovie,
   detailMovie,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ViewAll);

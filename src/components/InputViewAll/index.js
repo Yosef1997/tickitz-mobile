@@ -3,6 +3,7 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Sort from 'react-native-vector-icons/FontAwesome';
+import {allMovie} from '../Redux/Action/movie';
 
 export default class app extends Component {
   state = {
@@ -35,8 +36,8 @@ export default class app extends Component {
           onChangeText={this.props.onChangeText}
           keyboardType={this.props.keyboardType}
         />
-        <TouchableOpacity onPress={this.OnIconPress}>
-          <Sort name={this.state.sort} />
+        <TouchableOpacity onPress={this.props.onPress}>
+          <Sort name={this.props.sort} />
         </TouchableOpacity>
       </View>
     );
