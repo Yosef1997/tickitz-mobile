@@ -187,3 +187,9 @@ export const detailTime = (token, id) => {
     }
   };
 };
+
+// Seat
+export const seatOrder = (seat) => ({
+  type: 'SEAT_ORDER',
+  payload: seat,
+});

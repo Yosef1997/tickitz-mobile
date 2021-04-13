@@ -26,7 +26,7 @@ export default class index extends Component {
         <View style={styles.btngroup}>
           {this.state.row1.map((item) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity key={String(item.id)}>
                 <View style={styles.btn}>
                   <Image source={item.image} style={styles.img} />
                 </View>
@@ -37,7 +37,7 @@ export default class index extends Component {
         <View style={styles.btngroup}>
           {this.state.row2.map((item) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity key={String(item.id)}>
                 <View style={styles.btn}>
                   <Image source={item.image} style={styles.img} />
                 </View>

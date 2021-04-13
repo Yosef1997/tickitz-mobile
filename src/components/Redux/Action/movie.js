@@ -18,6 +18,14 @@ export const allMovie = (token, search, order, limit, page, sort) => {
         type: 'ALL_MOVIE',
         payload: results.data.results,
       });
+      dispatch({
+        type: 'PAGE_INFO_ALL_MOVIE',
+        payload: results.data.pageInfo,
+      });
+      dispatch({
+        type: 'IS_LOADING',
+        payload: false,
+      });
     } catch (err) {
       console.log(err);
       const {message} = err.response.data;
@@ -49,5 +57,18 @@ export const detailMovie = (token, id) => {
         payload: message,
       });
     }
+  };
+};
+
+export const newDataMovieFlatList = (movie, pageInfo) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'ALL_MOVIE',
+      payload: movie,
+    });
+    dispatch({
+      type: 'PAGE_INFO_ALL_MOVIE',
+      payload: pageInfo,
+    });
   };
 };

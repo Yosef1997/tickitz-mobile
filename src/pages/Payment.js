@@ -9,13 +9,15 @@ import {
 import Footer from '../components/Footer';
 import Price from '../components/Price';
 import BtnPay from '../components/BtnPay';
+import {connect} from 'react-redux';
 import Formpay from '../components/FormPay';
 
-export default class Payment extends Component {
+class Payment extends Component {
   render() {
+    const {order} = this.props;
     return (
       <ScrollView style={styles.container}>
-        <Price price={'10.00'} />
+        <Price price={`${order.seatOrder.length * 10}.00`} />
         <View style={styles.parent}>
           <Text style={styles.text1}>Payment Method</Text>
         </View>
@@ -27,13 +29,6 @@ export default class Payment extends Component {
         </View>
         <View style={styles.parent2}>
           <Formpay />
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => this.props.navigation.navigate('Ticket')}>
-            <View>
-              <Text style={styles.text2}>Pay your order</Text>
-            </View>
-          </TouchableOpacity>
         </View>
         <Footer />
       </ScrollView>
@@ -79,3 +74,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+
+const mapStateToProps = (state) => ({
+  order: state.order,
+});
+
+export default connect(mapStateToProps)(Payment);

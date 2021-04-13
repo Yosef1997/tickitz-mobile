@@ -4,7 +4,8 @@ const initialState = {
   allLocation: null,
   allCinema: null,
   allTime: null,
-  // detailMovie: null,
+  pageInfoMovie: null,
+  isLoading: false,
   errorMsg: '',
 };
 
@@ -16,6 +17,11 @@ const movieReducer = (state = initialState, action) => {
         allMovie: action.payload,
       };
     }
+    case 'PAGE_INFO_ALL_MOVIE':
+      return {
+        ...state,
+        pageInfoMovie: action.payload,
+      };
     case 'ALL_DATE': {
       return {
         ...state,
@@ -40,12 +46,11 @@ const movieReducer = (state = initialState, action) => {
         allTime: action.payload,
       };
     }
-    // case 'DETAIL_MOVIE': {
-    //   return {
-    //     ...state,
-    //     detailMovie: action.payload,
-    //   };
-    // }
+    case 'IS_LOADING':
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
     case 'SET_MOVIE_MESSAGE': {
       return {
         ...state,

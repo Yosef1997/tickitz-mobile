@@ -5,6 +5,7 @@ const initialState = {
   detailCinema: null,
   detailTime: null,
   detailSeat: null,
+  seatOrder: null,
   message: '',
   errorMsg: '',
 };
@@ -51,6 +52,12 @@ const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         errorMsg: action.payload,
+      };
+    }
+    case 'SEAT_ORDER': {
+      return {
+        ...state,
+        seatOrder: action.payload,
       };
     }
     default:

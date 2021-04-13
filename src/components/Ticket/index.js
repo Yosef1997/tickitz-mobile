@@ -37,12 +37,14 @@ class index extends Component {
           <Text style={styles.text1}>Seats</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.text2}>3 pcs</Text>
-          <Text style={styles.text2}>C4, C5, C6</Text>
+          <Text style={styles.text2}>{order.seatOrder.length}</Text>
+          <Text style={styles.text2}>{order.seatOrder}</Text>
         </View>
         <View style={styles.group}>
           <Text style={styles.text3}>Total</Text>
-          <Text style={styles.text4}>$30.00</Text>
+          <Text style={styles.text4}>{`$${
+            order.seatOrder.length * 10
+          }.00`}</Text>
         </View>
       </View>
     );

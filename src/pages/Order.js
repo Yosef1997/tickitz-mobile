@@ -1,85 +1,3 @@
-// import React, {Component} from 'react';
-// import {
-//   Text,
-//   View,
-//   ScrollView,
-//   TouchableOpacity,
-//   StyleSheet,
-// } from 'react-native';
-// import SeatRow from '../components/PickerSeat/Column';
-// import SeatCol from '../components/PickerSeat/Row';
-// import Seat from '../components/CardSeat';
-// import Footer from '../components/Footer';
-
-// export default class Order extends Component {
-//   render() {
-//     return (
-//       <ScrollView style={styles.container}>
-//         <Seat />
-//         <View style={styles.seats}>
-//           <SeatRow />
-//           <SeatCol />
-//         </View>
-//         <TouchableOpacity style={styles.btn1}>
-//           <Text style={styles.btntext1}>Add new seat</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity
-//           style={styles.btn2}
-//           onPress={() => this.props.navigation.navigate('Payment')}>
-//           <Text style={styles.btntext2}>Checkout now</Text>
-//         </TouchableOpacity>
-//         <Footer />
-//       </ScrollView>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: '#F5F6F8',
-//   },
-//   seats: {
-//     flexDirection: 'row',
-//     backgroundColor: 'white',
-//     marginHorizontal: 12,
-//     borderRadius: 12,
-//     marginVertical: 8,
-//     paddingVertical: 16,
-//   },
-//   btn1: {
-//     borderWidth: 1,
-//     borderColor: '#5F2EEA',
-//     height: 56,
-//     borderRadius: 8,
-//     justifyContent: 'center',
-//     marginTop: 12,
-//     marginBottom: 28,
-//     marginHorizontal: 12,
-//   },
-//   btntext1: {
-//     textAlign: 'center',
-//     color: '#5F2EEA',
-//     fontSize: 16,
-//     fontWeight: '700',
-//   },
-//   btn2: {
-//     backgroundColor: '#5F2EEA',
-//     height: 56,
-//     borderRadius: 8,
-//     justifyContent: 'center',
-//     marginTop: 28,
-//     marginBottom: 72,
-//     marginHorizontal: 12,
-//   },
-
-//   btntext2: {
-//     textAlign: 'center',
-//     color: 'white',
-//     fontSize: 16,
-//     fontWeight: '700',
-//   },
-// });
-
 import React, {Component} from 'react';
 import {
   ScrollView,
@@ -90,11 +8,13 @@ import {
   Alert,
 } from 'react-native';
 import Footer from '../components/Footer';
-
 import SeatSelector from '../components/SeatSelector';
 import SeatPicker from '../components/SeatPicker';
+import Button from '../components/Button';
+import {connect} from 'react-redux';
+import {seatOrder} from '../components/Redux/Action/showTime';
 
-export default class Order extends Component {
+class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -141,6 +61,10 @@ export default class Order extends Component {
       Alert.alert('Your seat has been reserved!');
     }
   }
+  async doCheckOut() {
+    await this.props.seatOrder(this.state.selectedSeat);
+    this.props.navigation.navigate('Payment');
+  }
   render() {
     const {selectedSeat, soldSeat} = this.state;
     return (
@@ -167,39 +91,9 @@ export default class Order extends Component {
             />
           ))}
         </View>
-
-        {/* {selectedSeat === [] ? (
-          <>
-            <View style={styles.seats}>
-              {selectedSeat.map((seat, index) => (
-                <SeatPicker
-                  key={String(index)}
-                  onChange={(newSeat) => this.seatPick(seat, newSeat)}
-                  selected={seat}
-                  allSeat={this.state.allSeat}
-                />
-              ))}
-            </View>
-          </>
-        ) : (
-          <>
-            <View style={styles.noSeats}>
-              {selectedSeat.map((seat, index) => (
-                <SeatPicker
-                  key={String(index)}
-                  onChange={(newSeat) => this.seatPick(seat, newSeat)}
-                  selected={seat}
-                  allSeat={this.state.allSeat}
-                />
-              ))}
-            </View>
-          </>
-        )} */}
-        <TouchableOpacity
-          style={styles.btn2}
-          onPress={() => this.props.navigation.navigate('Payment')}>
-          <Text style={styles.btntext2}>Checkout now</Text>
-        </TouchableOpacity>
+        <View style={styles.btn2} onPress={() => this.doCheckOut()}>
+          <Button>Checkout now</Button>
+        </View>
         <Footer />
       </ScrollView>
     );
@@ -225,10 +119,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   btn2: {
-    backgroundColor: '#5F2EEA',
-    height: 56,
-    borderRadius: 8,
-    justifyContent: 'center',
     marginTop: 28,
     marginBottom: 72,
     marginHorizontal: 12,
@@ -250,3 +140,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F6F8',
   },
 });
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+const mapDispatchToProps = {seatOrder};
+export default connect(mapStateToProps, mapDispatchToProps)(Order);
