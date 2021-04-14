@@ -12,9 +12,15 @@ const authConfig = {
   stateReconciler: hardSet,
 };
 
+const movieConfig = {
+  key: 'movie',
+  storage: AsyncStorage,
+  stateReconciler: hardSet,
+};
+
 const reducers = combineReducers({
   auth: persistReducer(authConfig, authReducer),
-  movie: movieReducer,
+  movie: persistReducer(movieConfig, movieReducer),
   order: orderReducer,
 });
 

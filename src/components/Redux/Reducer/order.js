@@ -6,6 +6,9 @@ const initialState = {
   detailTime: null,
   detailSeat: null,
   seatOrder: null,
+  soldSeat: null,
+  purchase: null,
+  history: null,
   message: '',
   errorMsg: '',
 };
@@ -58,6 +61,30 @@ const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         seatOrder: action.payload,
+      };
+    }
+    case 'SOLD_SEAT': {
+      return {
+        ...state,
+        soldSeat: action.payload,
+      };
+    }
+    case 'ORDER_MESSAGE': {
+      return {
+        ...state,
+        errorMsg: action.payload,
+      };
+    }
+    case 'PURCHASE': {
+      return {
+        ...state,
+        purchase: action.payload,
+      };
+    }
+    case 'ALL_PURCHASE': {
+      return {
+        ...state,
+        history: action.payload,
       };
     }
     default:

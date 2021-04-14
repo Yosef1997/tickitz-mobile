@@ -4,8 +4,24 @@ import InputCustom from '../InputCustom';
 import Icon from '../../assets/warning.png';
 import Button from '../Button';
 import {connect} from 'react-redux';
+import {purchase} from '../Redux/Action/order';
 
 class index extends Component {
+  doPay = async () => {
+    const {token, user} = this.props.auth;
+    const {order} = this.props;
+    await this.props.purchase(
+      token,
+      order.detailMovie.name,
+      order.detailDate.date,
+      order.detailLocation.name,
+      order.detailTime.time,
+      order.detailCinema.name,
+      order.seatOrder,
+      user.id,
+    );
+    () => this.props.navigation.navigate('Ticket');
+  };
   render() {
     const {user} = this.props.auth;
     return (
@@ -27,7 +43,7 @@ class index extends Component {
           </View>
         </View>
         <View style={styles.formBtn}>
-          <Button>Pay your order</Button>
+          <Button onPress={() => this.doPay()}>Pay your order</Button>
         </View>
       </>
     );
@@ -69,6 +85,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  order: state.order,
 });
-const mapDispatchToProps = {};
-export default connect(mapStateToProps)(index);
+const mapDispatchToProps = {purchase};
+export default connect(mapStateToProps, mapDispatchToProps)(index);

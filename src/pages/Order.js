@@ -1,18 +1,11 @@
 import React, {Component} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
 import Footer from '../components/Footer';
 import SeatSelector from '../components/SeatSelector';
 import SeatPicker from '../components/SeatPicker';
 import Button from '../components/Button';
 import {connect} from 'react-redux';
-import {seatOrder} from '../components/Redux/Action/showTime';
+import {allSoldSeat, seatOrder} from '../components/Redux/Action/order';
 
 class Order extends Component {
   constructor(props) {
@@ -26,6 +19,21 @@ class Order extends Component {
     this.selectSeat = this.selectSeat.bind(this);
     this.checkAvailableSeat = this.checkAvailableSeat.bind(this);
     this.seatPick = this.seatPick.bind(this);
+  }
+  async componentDidMount() {
+    const {token} = this.props.auth;
+    const {order} = this.props;
+    await this.props.allSoldSeat(
+      token,
+      order.detailMovie.name,
+      order.detailDate.date,
+      order.detailLocation.name,
+      order.detailTime.time,
+      order.detailCinema.name,
+    );
+    if (order.soldSeat !== null) {
+      this.setState({soldSeat: order.soldSeat});
+    }
   }
   selectSeat(seatNum) {
     const {selectedSeat} = this.state;
@@ -92,7 +100,7 @@ class Order extends Component {
           ))}
         </View>
         <View style={styles.btn2} onPress={() => this.doCheckOut()}>
-          <Button>Checkout now</Button>
+          <Button onPress={() => this.doCheckOut()}>Checkout now</Button>
         </View>
         <Footer />
       </ScrollView>
@@ -142,6 +150,7 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  order: state.order,
 });
-const mapDispatchToProps = {seatOrder};
+const mapDispatchToProps = {seatOrder, allSoldSeat};
 export default connect(mapStateToProps, mapDispatchToProps)(Order);
