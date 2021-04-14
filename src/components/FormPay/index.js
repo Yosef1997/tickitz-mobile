@@ -5,6 +5,7 @@ import Icon from '../../assets/warning.png';
 import Button from '../Button';
 import {connect} from 'react-redux';
 import {purchase} from '../Redux/Action/order';
+import PushNotification from 'react-native-push-notification';
 
 class index extends Component {
   doPay = async () => {
@@ -20,7 +21,12 @@ class index extends Component {
       order.seatOrder,
       user.id,
     );
-    () => this.props.navigation.navigate('Ticket');
+    PushNotification.localNotification({
+      channelId: 'Payment',
+      title: 'Payment Success', // (optional)
+      message: 'Thank you, Enjoy the movie', // (required)
+    });
+    this.props.navigation.navigate('Ticket');
   };
   render() {
     const {user} = this.props.auth;

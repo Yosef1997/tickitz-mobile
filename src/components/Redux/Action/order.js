@@ -30,7 +30,7 @@ export const allSoldSeat = (token, movie, date, location, time, cinema) => {
     form.append('movie', movie);
     form.append('date', date);
     form.append('location', location);
-    form.append('time', time);
+    form.append('time', moment(time).format('YYYY-MM-DD'));
     form.append('cinema', cinema);
     console.log(form, '<<<<<<<<sold seat');
     try {
@@ -71,7 +71,7 @@ export const purchase = (
     form.append('movie', movie);
     form.append('date', date);
     form.append('location', location);
-    form.append('time', time);
+    form.append('time', moment(time).format('YYYY-MM-DD'));
     form.append('cinema', cinema);
     idSeat.map((item) => form.append('idSeat', item));
     form.append('createdBy', createdBy);

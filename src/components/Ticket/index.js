@@ -129,5 +129,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   order: state.order,
 });
-
 export default connect(mapStateToProps)(index);

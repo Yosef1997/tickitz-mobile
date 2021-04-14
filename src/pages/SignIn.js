@@ -16,8 +16,13 @@ import FacebookIcon from '../assets/facebookicon.png';
 import Button from '../components/Button';
 import {Formik} from 'formik';
 import {connect} from 'react-redux';
-import {signin, detailUser} from '../components/Redux/Action/auth';
-import {show} from '../components/Redux/Action/auth';
+import {signin} from '../components/Redux/Action/auth';
+import {
+  allDate,
+  allLocation,
+  allCinema,
+  allTime,
+} from '../components/Redux/Action/showTime';
 
 class SignIn extends Component {
   state = {
@@ -45,6 +50,10 @@ class SignIn extends Component {
       this.setState({isMessage: false});
     }, 5000);
     if (this.props.auth.token !== null) {
+      this.props.allDate(this.props.auth.token);
+      this.props.allLocation(this.props.auth.token);
+      this.props.allCinema(this.props.auth.token);
+      this.props.allTime(this.props.auth.token);
       this.props.navigation.navigate('Home');
     }
   }
@@ -113,11 +122,6 @@ class SignIn extends Component {
             </>
           )}
         </Formik>
-        {/* <TouchableOpacity style={styles.btnsignup} onPress={this.doLogin}>
-          <View>
-            <Text style={styles.btnfont}>Sign In</Text>
-          </View>
-        </TouchableOpacity> */}
         <View style={styles.tologin}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('ForgetPass')}>
@@ -240,6 +244,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-const mapDispatchToProps = {signin, show, detailUser};
+const mapDispatchToProps = {signin, allDate, allLocation, allCinema, allTime};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
