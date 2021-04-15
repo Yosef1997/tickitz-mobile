@@ -14,6 +14,7 @@ import {
   detailLocation,
   detailCinema,
 } from '../components/Redux/Action/showTime';
+import {allSoldSeat} from '../components/Redux/Action/order';
 
 class MovieDetail extends Component {
   state = {
@@ -32,6 +33,16 @@ class MovieDetail extends Component {
   }
   async setCinema(id) {
     await this.props.detailCinema(this.props.auth.token, id);
+    const {token} = this.props.auth;
+    const {order} = this.props;
+    await this.props.allSoldSeat(
+      token,
+      order.detailMovie.name,
+      order.detailDate.date,
+      order.detailLocation.name,
+      order.detailTime.time,
+      order.detailCinema.name,
+    );
     this.props.navigation.navigate('Order');
   }
 
@@ -112,5 +123,6 @@ const mapDispatchToProps = {
   detailDate,
   detailLocation,
   detailCinema,
+  allSoldSeat,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MovieDetail);

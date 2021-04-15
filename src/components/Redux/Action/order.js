@@ -28,11 +28,12 @@ export const allSoldSeat = (token, movie, date, location, time, cinema) => {
   return async (dispatch) => {
     const form = new URLSearchParams();
     form.append('movie', movie);
-    form.append('date', date);
+    form.append('date', moment(date).format('YYYY-MM-DD'));
     form.append('location', location);
-    form.append('time', moment(time).format('YYYY-MM-DD'));
+    form.append('time', time);
     form.append('cinema', cinema);
     console.log(form, '<<<<<<<<sold seat');
+    // console.log(data);
     try {
       dispatch({
         type: 'ORDER_MESSAGE',
@@ -69,9 +70,9 @@ export const purchase = (
   return async (dispatch) => {
     const form = new URLSearchParams();
     form.append('movie', movie);
-    form.append('date', date);
+    form.append('date', moment(date).format('YYYY-MM-DD'));
     form.append('location', location);
-    form.append('time', moment(time).format('YYYY-MM-DD'));
+    form.append('time', time);
     form.append('cinema', cinema);
     idSeat.map((item) => form.append('idSeat', item));
     form.append('createdBy', createdBy);

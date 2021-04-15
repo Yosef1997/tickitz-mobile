@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     left: 20,
     right: 20,
-    height: 300,
+    height: 350,
     alignItems: 'center',
     position: 'absolute',
   },
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   },
   pickerset: {
     width: '100%',
+    height: 250,
     marginVertical: 15,
   },
   btnDropdown: {

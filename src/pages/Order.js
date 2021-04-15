@@ -5,14 +5,14 @@ import SeatSelector from '../components/SeatSelector';
 import SeatPicker from '../components/SeatPicker';
 import Button from '../components/Button';
 import {connect} from 'react-redux';
-import {allSoldSeat, seatOrder} from '../components/Redux/Action/order';
+import {seatOrder} from '../components/Redux/Action/order';
 
 class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedSeat: [],
-      soldSeat: [],
+      soldSeat: this.props.order.soldSeat,
       availableSeat: [],
       allSeat: [],
     };
@@ -20,21 +20,25 @@ class Order extends Component {
     this.checkAvailableSeat = this.checkAvailableSeat.bind(this);
     this.seatPick = this.seatPick.bind(this);
   }
-  async componentDidMount() {
-    const {token} = this.props.auth;
-    const {order} = this.props;
-    await this.props.allSoldSeat(
-      token,
-      order.detailMovie.name,
-      order.detailDate.date,
-      order.detailLocation.name,
-      order.detailTime.time,
-      order.detailCinema.name,
-    );
-    if (order.soldSeat !== null) {
-      this.setState({soldSeat: order.soldSeat});
-    }
-  }
+  // async componentDidMount() {
+  //   const {token} = this.props.auth;
+  //   const {order} = this.props;
+  //   await this.props.allSoldSeat(
+  //     token,
+  //     order.detailMovie.name,
+  //     order.detailDate.date,
+  //     order.detailLocation.name,
+  //     order.detailTime.time,
+  //     order.detailCinema.name,
+  //   );
+  // }
+  // componentWillUpdate() {
+  //   const {order} = this.props;
+
+  //   if (order.soldSeat !== null) {
+  //     this.setState({soldSeat: order.soldSeat});
+  //   }
+  // }
   selectSeat(seatNum) {
     const {selectedSeat} = this.state;
     this.setState(
@@ -152,5 +156,5 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
   order: state.order,
 });
-const mapDispatchToProps = {seatOrder, allSoldSeat};
+const mapDispatchToProps = {seatOrder};
 export default connect(mapStateToProps, mapDispatchToProps)(Order);
