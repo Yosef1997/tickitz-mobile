@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {LogBox} from 'react-native';
-import {ScrollView, FlatList} from 'react-native';
+import {ScrollView, FlatList, Text, StyleSheet} from 'react-native';
 import Footer from '../components/Footer';
 import CardHistory from '../components/CardHistoryMovie';
 import Theater from '../assets/CineOne21.png';
@@ -21,7 +21,25 @@ class History extends Component {
     return (
       <ScrollView>
         <ProfilMenu Profile={() => this.props.navigation.navigate('Profil')} />
-        <FlatList
+        {order.history === null ? (
+          <Text style={styles.text}>Order History Still Empty</Text>
+        ) : (
+          <FlatList
+            data={order.history}
+            keyExtractor={(item) => String(item.id)}
+            renderItem={({item}) => {
+              return (
+                <CardHistory
+                  image={Theater}
+                  date={moment(item.date).format('dddd, DD MMMM YYYY')}
+                  time={item.time}
+                  movie={item.movie}
+                />
+              );
+            }}
+          />
+        )}
+        {/* <FlatList
           data={order.history}
           keyExtractor={(item) => String(item.id)}
           renderItem={({item}) => {
@@ -35,13 +53,21 @@ class History extends Component {
               />
             );
           }}
-        />
+        /> */}
         <Footer />
       </ScrollView>
     );
   }
 }
-
+const styles = StyleSheet.create({
+  text: {
+    color: 'grey',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 50,
+  },
+});
 const mapStateToProps = (state) => ({
   auth: state.auth,
   order: state.order,

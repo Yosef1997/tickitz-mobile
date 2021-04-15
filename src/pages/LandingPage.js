@@ -29,10 +29,6 @@ class LandingPage extends Component {
   }
   goToDetail = async (id) => {
     await this.props.detailMovie(this.props.auth.token, id);
-    // await this.props.allDate(this.props.auth.token);
-    // await this.props.allLocation(this.props.auth.token);
-    // await this.props.allCinema(this.props.auth.token);
-    // await this.props.allTime(this.props.auth.token);
     this.props.navigation.navigate('MovDetail');
   };
   render() {

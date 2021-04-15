@@ -19,6 +19,10 @@ const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         detailMovie: action.payload,
+        detailDate: null,
+        detailLocation: null,
+        detailCinema: null,
+        detailTime: null,
       };
     }
     case 'DETAIL_DATE': {

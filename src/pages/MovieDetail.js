@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {LogBox} from 'react-native';
+import {Alert, LogBox} from 'react-native';
 import {Text, View, ScrollView, StyleSheet, FlatList} from 'react-native';
 import Detail from '../components/DetailMovie';
 import Footer from '../components/Footer';
@@ -35,15 +35,23 @@ class MovieDetail extends Component {
     await this.props.detailCinema(this.props.auth.token, id);
     const {token} = this.props.auth;
     const {order} = this.props;
-    await this.props.allSoldSeat(
-      token,
-      order.detailMovie.name,
-      order.detailDate.date,
-      order.detailLocation.name,
-      order.detailTime.time,
-      order.detailCinema.name,
-    );
-    this.props.navigation.navigate('Order');
+    if (
+      order.detailDate === null ||
+      order.detailLocation === null ||
+      order.detailTime === null
+    ) {
+      Alert.alert("Date, location, time haven't set");
+    } else {
+      await this.props.allSoldSeat(
+        token,
+        order.detailMovie.name,
+        order.detailDate.date,
+        order.detailLocation.name,
+        order.detailTime.time,
+        order.detailCinema.name,
+      );
+      this.props.navigation.navigate('Order');
+    }
   }
 
   render() {
@@ -65,9 +73,7 @@ class MovieDetail extends Component {
         />
         <View style={styles.container3}>
           <Text style={styles.text1}>Showtimes and Tickets</Text>
-
           <DropdownDate icon="calendar" date={this.state.date} />
-
           <DropdownLocation icon="location" location={this.state.location} />
         </View>
         <View style={styles.container2}>
@@ -76,6 +82,7 @@ class MovieDetail extends Component {
             keyExtractor={(item) => String(item.id)}
             renderItem={({item}) => (
               <CardCinema
+                disabled={false}
                 source={{uri: `${API_URL}/upload/cinema/${item.picture}`}}
                 address={item.address}
                 price={item.price}

@@ -4,9 +4,6 @@ import {detailTime} from '../Redux/Action/showTime';
 import {connect} from 'react-redux';
 
 class index extends Component {
-  // async componentDidMount() {
-  //   await this.props.time();
-  // }
   selectTime = async (id) => {
     await this.props.detailTime(this.props.auth.token, id);
   };
@@ -33,15 +30,14 @@ class index extends Component {
           <Text style={styles.text4}>${this.props.price}/seat</Text>
         </View>
         <View style={styles.btncontainer}>
-          <TouchableOpacity onPress={this.props.onPress}>
-            <View style={styles.btn1}>
-              <Text style={styles.text5}>Book now</Text>
-            </View>
+          <TouchableOpacity
+            disabled={this.props.disabled ? true : false}
+            style={styles.btn1(this.props.disabled)}
+            onPress={this.props.onPress}>
+            <Text style={styles.text5(this.props.disabled)}>Book now</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.btn2}>
-              <Text style={styles.text6}>Add to cart</Text>
-            </View>
+          <TouchableOpacity style={styles.btn2}>
+            <Text style={styles.text6}>Add to cart</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -95,13 +91,26 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignContent: 'flex-end',
   },
-  btn1: {
-    height: 40,
-    width: 134,
-    backgroundColor: '#5F2EEA',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 4,
+  btn1: function (isDisabled) {
+    if (isDisabled) {
+      return {
+        height: 40,
+        width: 134,
+        backgroundColor: '#DADADA',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+      };
+    } else {
+      return {
+        height: 40,
+        width: 134,
+        backgroundColor: '#5F2EEA',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+      };
+    }
   },
   btn2: {
     height: 40,
@@ -110,10 +119,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 4,
   },
-  text5: {
-    color: '#F7F7FC',
-    fontSize: 14,
-    fontWeight: 'bold',
+  text5: function (isDisabled) {
+    if (isDisabled) {
+      return {
+        color: '#88888F',
+        fontSize: 14,
+        fontWeight: 'bold',
+      };
+    } else {
+      return {
+        color: '#F7F7FC',
+        fontSize: 14,
+        fontWeight: 'bold',
+      };
+    }
   },
   text6: {
     color: '#5F2EEA',
@@ -127,6 +146,7 @@ const styles = StyleSheet.create({
   },
   btncontainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

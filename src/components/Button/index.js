@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
       return {
         textAlign: 'center',
         color: '#88888F',
+        fontWeight: 'bold',
         fontSize: 16,
       };
     } else {
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         fontSize: 16,
+        fontWeight: 'bold',
       };
     }
   },

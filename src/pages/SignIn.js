@@ -37,25 +37,28 @@ class SignIn extends Component {
     } else if (!password) {
       errors.msg = 'Password Required';
     }
+    console.log(errors.msg, '<<<<<<<singin');
+
     return errors;
   }
 
   async doLogin(values) {
     this.setState({isLoading: true});
     await this.props.signin(values.email, values.password);
-    setTimeout(() => {
-      this.setState({isLoading: false, isMessage: true});
-    }, 1000);
-    setTimeout(() => {
-      this.setState({isMessage: false});
-    }, 5000);
     if (this.props.auth.token !== null) {
       this.props.allDate(this.props.auth.token);
       this.props.allLocation(this.props.auth.token);
       this.props.allCinema(this.props.auth.token);
       this.props.allTime(this.props.auth.token);
-      this.props.navigation.navigate('Home');
     }
+    setTimeout(() => {
+      this.setState({isLoading: false, isMessage: true});
+    }, 2000);
+    setTimeout(() => {
+      this.setState({isMessage: false});
+    }, 5000);
+
+    this.props.navigation.navigate('Home');
   }
   render() {
     return (
@@ -107,15 +110,21 @@ class SignIn extends Component {
                     {this.props.auth.errorMsg}
                   </Text>
                 ) : null}
-                {this.state.isLoading ? (
+                {this.state.isLoading === true ? (
                   <View>
-                    <ActivityIndicator />
+                    <ActivityIndicator size="large" color="#5F2EEA" />
                   </View>
                 ) : (
                   <View style={styles.formBtn}>
-                    <Button disabled={errors.msg} onPress={handleSubmit}>
-                      Join for free
-                    </Button>
+                    {values.email === '' || values.password === '' ? (
+                      <Button disabled={true} onPress={handleSubmit}>
+                        Sign in
+                      </Button>
+                    ) : (
+                      <Button disabled={false} onPress={handleSubmit}>
+                        Sign in
+                      </Button>
+                    )}
                   </View>
                 )}
               </View>

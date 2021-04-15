@@ -43,13 +43,13 @@ class index extends Component {
   async doUpdate(values) {
     const {token} = this.props.auth;
     const {user} = this.props.auth;
-    console.log(
-      values.fullName,
-      values.email,
-      values.phoneNumber,
-      values.newPassword,
-      '<<<<<<<<<<<<<<state',
-    );
+    // console.log(
+    //   values.fullName,
+    //   values.email,
+    //   values.phoneNumber,
+    //   values.newPassword,
+    //   '<<<<<<<<<<<<<<state',
+    // );
     this.props.updateUser(token, {
       id: user.id,
       fullName: values.fullName,
@@ -93,11 +93,24 @@ class index extends Component {
                 <View style={styles.container}>
                   <Text style={styles.text2}>Details Information</Text>
                   <Text style={styles.text3}>Full Name</Text>
-                  <InputCustom
+                  {user.firstName !== 'null' ? (
+                    <InputCustom
+                      placeholder={`${user.firstName} ${user.lastName}`}
+                      value={values.fullName}
+                      onChangeText={handleChange('fullName')}
+                    />
+                  ) : (
+                    <InputCustom
+                      placeholder="Write your full name"
+                      value={values.fullName}
+                      onChangeText={handleChange('fullName')}
+                    />
+                  )}
+                  {/* <InputCustom
                     placeholder={`${user.firstName} ${user.lastName}`}
                     value={values.fullName}
                     onChangeText={handleChange('fullName')}
-                  />
+                  /> */}
                   <Text style={styles.text4}>E-mail</Text>
                   <InputCustom
                     placeholder={user.email}
@@ -106,12 +119,27 @@ class index extends Component {
                     keyboardType="email-address"
                   />
                   <Text style={styles.text4}>Phone Number</Text>
-                  <InputCustom
+                  {user.phoneNumber !== 'null' ? (
+                    <InputCustom
+                      text="+62"
+                      placeholder={user.phoneNumber}
+                      value={values.phoneNumber}
+                      onChangeText={handleChange('phoneNumber')}
+                    />
+                  ) : (
+                    <InputCustom
+                      text="+62"
+                      placeholder="Write your phone number"
+                      value={values.phoneNumber}
+                      onChangeText={handleChange('phoneNumber')}
+                    />
+                  )}
+                  {/* <InputCustom
                     text="+62"
                     placeholder={user.phoneNumber}
                     value={values.phoneNumber}
                     onChangeText={handleChange('phoneNumber')}
-                  />
+                  /> */}
                 </View>
                 <View style={styles.container}>
                   <Text style={styles.text2}>Account and Privacy</Text>

@@ -15,6 +15,7 @@ class Order extends Component {
       soldSeat: [],
       availableSeat: [],
       allSeat: [],
+      message: '',
     };
     this.selectSeat = this.selectSeat.bind(this);
     this.checkAvailableSeat = this.checkAvailableSeat.bind(this);
@@ -63,11 +64,19 @@ class Order extends Component {
     }
   }
   async doCheckOut() {
-    await this.props.seatOrder(this.state.selectedSeat);
-    this.props.navigation.navigate('Payment');
+    console.log(this.state.selectedSeat, '<<<<<<selectedseat');
+    if (this.state.selectedSeat.length === 0) {
+      this.setState({message: "Seat hasn't choose yet"});
+    } else {
+      await this.props.seatOrder(this.state.selectedSeat);
+      this.props.navigation.navigate('Payment');
+    }
+    setTimeout(() => {
+      this.setState({message: ''});
+    }, 3000);
   }
   render() {
-    const {selectedSeat, soldSeat} = this.state;
+    const {selectedSeat, soldSeat, message} = this.state;
     return (
       <ScrollView style={styles.container}>
         <SeatSelector
@@ -92,7 +101,8 @@ class Order extends Component {
             />
           ))}
         </View>
-        <View style={styles.btn2} onPress={() => this.doCheckOut()}>
+        {message !== '' && <Text style={styles.textError}>{message}</Text>}
+        <View style={styles.btn2}>
           <Button onPress={() => this.doCheckOut()}>Checkout now</Button>
         </View>
         <Footer />
@@ -139,6 +149,12 @@ const styles = StyleSheet.create({
   },
   noSeats: {
     backgroundColor: '#F5F6F8',
+  },
+  textError: {
+    fontSize: 14,
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
 const mapStateToProps = (state) => ({

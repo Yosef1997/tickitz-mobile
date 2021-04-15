@@ -20,6 +20,7 @@ class index extends Component {
     isLoading: false,
     modalVisible: false,
     message: '',
+    type: 'danger',
   };
   setModalVisible = (visible) => {
     this.setState({modalVisible: visible});
@@ -53,12 +54,15 @@ class index extends Component {
             id: this.props.auth.user.id,
             picture: dataImage,
           });
-          this.setState({loading: false, message: 'Image has change'});
-          setTimeout(() => {
-            this.setState({message: ''});
-          }, 2000);
-          console.log(this.state.message);
+          this.setState({
+            loading: false,
+            type: 'success',
+            message: 'Image has change',
+          });
         }
+        setTimeout(() => {
+          this.setState({message: '', type: 'danger'});
+        }, 2000);
       },
     );
   };
@@ -87,16 +91,25 @@ class index extends Component {
           id: this.props.auth.user.id,
           picture: dataImage,
         });
-        this.setState({loading: false});
         this.setState({loading: false, message: 'Image has change'});
       }
+      setTimeout(() => {
+        this.setState({message: '', type: 'danger'});
+      }, 2000);
     });
   };
   deletePicture = async () => {
     await this.props.deletePicture(this.props.auth.token, {
       id: this.props.auth.user.id,
     });
-    this.setState({modalVisible: false, message: 'Image has deleted'});
+    this.setState({
+      modalVisible: false,
+      type: 'danger',
+      message: 'Image has deleted',
+    });
+    setTimeout(() => {
+      this.setState({message: '', type: 'danger'});
+    }, 2000);
   };
   render() {
     const {user} = this.props.auth;
@@ -158,13 +171,19 @@ class index extends Component {
               <Image source={Profil} style={styles.profil} />
             </TouchableOpacity>
           )}
-          {this.state.isLoading === true && <ActivityIndicator />}
-          {this.state.message !== '' && <Text>{this.state.message}</Text>}
-          {user.firstname !== null && user.name !== null ? (
+          {this.state.isLoading === true && (
+            <ActivityIndicator color="#5F2EEA" />
+          )}
+          {this.state.message !== '' && this.state.type === 'success' ? (
+            <Text style={styles.textsuccess}>{this.state.message}</Text>
+          ) : (
+            <Text style={styles.textError}>{this.state.message}</Text>
+          )}
+          {user.firstName === 'null' ? (
+            <Text style={styles.text3}>No name</Text>
+          ) : (
             <Text
               style={styles.text3}>{`${user.firstName} ${user.lastName}`}</Text>
-          ) : (
-            <Text style={styles.text3}>No name</Text>
           )}
           <Text style={styles.text4}>Moviegoers</Text>
         </View>
@@ -350,6 +369,18 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  textError: {
+    fontSize: 14,
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  textsuccess: {
+    fontSize: 14,
+    color: '#00D16C',
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
 

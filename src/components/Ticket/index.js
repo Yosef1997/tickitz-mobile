@@ -38,9 +38,7 @@ class index extends Component {
         </View>
         <View style={styles.row}>
           <Text style={styles.text2}>{order.seatOrder.length}</Text>
-          <Text style={styles.text2}>
-            {order.seatOrder.map((item) => item.split().join(','))}
-          </Text>
+          <Text style={styles.text2}>{order.seatOrder.join(', ')}</Text>
         </View>
         <View style={styles.group}>
           <Text style={styles.text3}>Total</Text>

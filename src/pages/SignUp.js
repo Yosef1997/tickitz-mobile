@@ -39,14 +39,13 @@ class SignUp extends Component {
 
   async doSignUp(values) {
     this.setState({isLoading: true});
-    console.log(values.email, values.password);
     await this.props.signup(values.email, values.password);
     setTimeout(() => {
       this.setState({isLoading: false, isMessage: true});
-    }, 1000);
+    }, 3000);
     setTimeout(() => {
       this.setState({isMessage: false});
-    }, 5000);
+    }, 6000);
     if (this.props.auth.errorMsg === '') {
       this.props.navigation.navigate('SignIn');
     }
@@ -102,13 +101,22 @@ class SignUp extends Component {
                   </Text>
                 ) : null}
                 {this.state.isLoading === true ? (
-                  <ActivityIndicator size="large" />
-                ) : null}
-                <View style={styles.formBtn}>
-                  <Button disabled={errors.msg} onPress={handleSubmit}>
-                    Join for free
-                  </Button>
-                </View>
+                  <View>
+                    <ActivityIndicator size="large" color="#5F2EEA" />
+                  </View>
+                ) : (
+                  <View style={styles.formBtn}>
+                    {values.email === '' || values.password === '' ? (
+                      <Button disabled={true} onPress={handleSubmit}>
+                        Join for free
+                      </Button>
+                    ) : (
+                      <Button disabled={false} onPress={handleSubmit}>
+                        Join for free
+                      </Button>
+                    )}
+                  </View>
+                )}
               </View>
             </>
           )}
