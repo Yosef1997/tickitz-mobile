@@ -106,7 +106,7 @@ export const allPurchase = (token, id) => {
         type: 'ORDER_MESSAGE',
         payload: '',
       });
-      const results = await http(token).get('/purchase/history', id);
+      const results = await http(token).post('/purchase/history', id);
       dispatch({
         type: 'ALL_PURCHASE',
         payload: results.data.results,

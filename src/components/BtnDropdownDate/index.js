@@ -13,32 +13,33 @@ import {connect} from 'react-redux';
 import {detailDate} from '../Redux/Action/showTime';
 
 class index extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pickerSelection: this.props.date,
-      pickerDisplayed: false,
-    };
-  }
-  async pickDate(newValue, id) {
+  // constructor(props) {
+  //   super(props);
+  // }
+  state = {
+    pickerSelection: this.props.date,
+    pickerDisplayed: false,
+  };
+
+  pickDate = async (newValue, id) => {
     this.setState({
       pickerSelection: `${moment(newValue).format('MMMM D, YYYY')}`,
     });
     await this.props.detailDate(this.props.auth.token, id);
     this.togglePicker();
-  }
+  };
 
-  togglePicker() {
+  togglePicker = () => {
     this.setState({
       pickerDisplayed: !this.state.pickerDisplayed,
     });
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => this.togglePicker()}
+          onPress={this.togglePicker}
           style={styles.btnDropdown}>
           <Icon name="calendar" size={18} />
           <Text style={styles.text1}>{this.state.pickerSelection}</Text>

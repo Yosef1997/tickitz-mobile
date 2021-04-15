@@ -12,7 +12,7 @@ class Order extends Component {
     super(props);
     this.state = {
       selectedSeat: [],
-      soldSeat: this.props.order.soldSeat,
+      soldSeat: [],
       availableSeat: [],
       allSeat: [],
     };
@@ -20,25 +20,14 @@ class Order extends Component {
     this.checkAvailableSeat = this.checkAvailableSeat.bind(this);
     this.seatPick = this.seatPick.bind(this);
   }
-  // async componentDidMount() {
-  //   const {token} = this.props.auth;
-  //   const {order} = this.props;
-  //   await this.props.allSoldSeat(
-  //     token,
-  //     order.detailMovie.name,
-  //     order.detailDate.date,
-  //     order.detailLocation.name,
-  //     order.detailTime.time,
-  //     order.detailCinema.name,
-  //   );
-  // }
-  // componentWillUpdate() {
-  //   const {order} = this.props;
-
-  //   if (order.soldSeat !== null) {
-  //     this.setState({soldSeat: order.soldSeat});
-  //   }
-  // }
+  async componentDidMount() {
+    const {order} = this.props;
+    if (order.soldSeat !== null) {
+      this.setState({soldSeat: order.soldSeat});
+    } else {
+      this.setState({soldSeat: []});
+    }
+  }
   selectSeat(seatNum) {
     const {selectedSeat} = this.state;
     this.setState(

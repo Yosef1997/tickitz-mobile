@@ -79,21 +79,24 @@ class ViewAll extends Component {
       this.props.newDataMovieFlatList(newData, response.data.pageInfo);
       this.setState({listRefresh: false});
     } catch (err) {
-      console.log(err.response.data.message);
+      console.log(err.response);
       this.setState({listRefresh: false});
     }
   };
   nextData = async () => {
     try {
       const oldData = this.props.movie.allMovie;
+      console.log(this.props.movie.pageInfoMovie.nextLink);
       const response = await http(this.props.auth.token).get(
-        `${this.props.contact.pageInfoMovie.nextLink}`,
+        `${this.props.movie.pageInfoMovie.nextLink}`,
       );
+      // const response = await http(this.props.auth.token).get('/movie');
       const resultResponse = response.data.results;
       const newData = [...oldData, ...resultResponse];
+      console.log(newData);
       this.props.newDataMovieFlatList(newData, response.data.pageInfo);
     } catch (err) {
-      console.log(err.response.data.message);
+      console.log(err);
     }
   };
 
