@@ -32,15 +32,12 @@ export const allSoldSeat = (token, movie, date, location, time, cinema) => {
     form.append('location', location);
     form.append('time', time);
     form.append('cinema', cinema);
-    console.log(form, '<<<<<<<<sold seat');
-    // console.log(data);
     try {
       dispatch({
         type: 'ORDER_MESSAGE',
         payload: '',
       });
       const results = await http(token).post('/seat/sold', form);
-      console.log(results);
       dispatch({
         type: 'SOLD_SEAT',
         payload: results.data.results.seat,
@@ -76,14 +73,12 @@ export const purchase = (
     form.append('cinema', cinema);
     idSeat.map((item) => form.append('idSeat', item));
     form.append('createdBy', createdBy);
-    console.log(form);
     try {
       dispatch({
         type: 'ORDER_MESSAGE',
         payload: '',
       });
       const results = await http(token).post('/purchase', form);
-      console.log(results);
       dispatch({
         type: 'PURCHASE',
         payload: results.data.results,

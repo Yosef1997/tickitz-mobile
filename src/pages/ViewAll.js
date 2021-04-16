@@ -69,11 +69,9 @@ class ViewAll extends Component {
     try {
       this.setState({listRefresh: true});
       const oldData = this.props.movie.allMovie;
-      console.log(oldData, '<<<<<<oldData');
       const response = await http(this.props.auth.token).get(
         `${this.props.movie.pageInfoMovie.nextLink}`,
       );
-      console.log(response);
       const resultResponse = response.data.results;
       const newData = [...oldData, ...resultResponse];
       this.props.newDataMovieFlatList(newData, response.data.pageInfo);
@@ -86,14 +84,12 @@ class ViewAll extends Component {
   nextData = async () => {
     try {
       const oldData = this.props.movie.allMovie;
-      console.log(this.props.movie.pageInfoMovie.nextLink);
       const response = await http(this.props.auth.token).get(
         `${this.props.movie.pageInfoMovie.nextLink}`,
       );
       // const response = await http(this.props.auth.token).get('/movie');
       const resultResponse = response.data.results;
       const newData = [...oldData, ...resultResponse];
-      console.log(newData);
       this.props.newDataMovieFlatList(newData, response.data.pageInfo);
     } catch (err) {
       console.log(err);

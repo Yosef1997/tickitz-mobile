@@ -13,9 +13,6 @@ import {connect} from 'react-redux';
 import {detailDate} from '../Redux/Action/showTime';
 
 class index extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
   state = {
     pickerSelection: this.props.date,
     pickerDisplayed: false,

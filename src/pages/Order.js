@@ -41,7 +41,6 @@ class Order extends Component {
         this.setState({availableSeat: this.checkAvailableSeat()});
       },
     );
-    console.log(selectedSeat);
   }
   checkAvailableSeat() {
     const {selectedSeat, allSeat} = this.state;
@@ -64,7 +63,6 @@ class Order extends Component {
     }
   }
   async doCheckOut() {
-    console.log(this.state.selectedSeat, '<<<<<<selectedseat');
     if (this.state.selectedSeat.length === 0) {
       this.setState({message: "Seat hasn't choose yet"});
     } else {

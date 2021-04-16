@@ -43,13 +43,6 @@ class index extends Component {
   async doUpdate(values) {
     const {token} = this.props.auth;
     const {user} = this.props.auth;
-    // console.log(
-    //   values.fullName,
-    //   values.email,
-    //   values.phoneNumber,
-    //   values.newPassword,
-    //   '<<<<<<<<<<<<<<state',
-    // );
     this.props.updateUser(token, {
       id: user.id,
       fullName: values.fullName,
@@ -106,11 +99,6 @@ class index extends Component {
                       onChangeText={handleChange('fullName')}
                     />
                   )}
-                  {/* <InputCustom
-                    placeholder={`${user.firstName} ${user.lastName}`}
-                    value={values.fullName}
-                    onChangeText={handleChange('fullName')}
-                  /> */}
                   <Text style={styles.text4}>E-mail</Text>
                   <InputCustom
                     placeholder={user.email}
@@ -134,12 +122,6 @@ class index extends Component {
                       onChangeText={handleChange('phoneNumber')}
                     />
                   )}
-                  {/* <InputCustom
-                    text="+62"
-                    placeholder={user.phoneNumber}
-                    value={values.phoneNumber}
-                    onChangeText={handleChange('phoneNumber')}
-                  /> */}
                 </View>
                 <View style={styles.container}>
                   <Text style={styles.text2}>Account and Privacy</Text>
@@ -147,19 +129,14 @@ class index extends Component {
                   <InputPass
                     placeholder=".........."
                     value={values.newPassword}
-                    // onBlur={handleBlur('newPassword')}
                     onChangeText={handleChange('newPassword')}
                   />
                   <Text style={styles.text4}>Confirm</Text>
                   <InputPass
                     placeholder=".........."
                     value={values.repeatPassword}
-                    // onBlur={handleBlur('repeatPassword')}
                     onChangeText={handleChange('repeatPassword')}
                   />
-                  {/* {errors.msg && values.newPassword !== '' ? (
-                    <Text style={styles.textError}>{errors.msg}</Text>
-                  ) : null} */}
                   {this.props.auth.message !== '' && this.state.isMessage ? (
                     <Text style={styles.textsuccess}>
                       {this.props.auth.message}

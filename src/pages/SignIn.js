@@ -37,7 +37,6 @@ class SignIn extends Component {
     } else if (!password) {
       errors.msg = 'Password Required';
     }
-    console.log(errors.msg, '<<<<<<<singin');
 
     return errors;
   }

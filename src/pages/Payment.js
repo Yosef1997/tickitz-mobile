@@ -54,8 +54,8 @@ class Payment extends Component {
     );
     PushNotification.localNotification({
       channelId: 'Payment',
-      title: 'Payment Success', // (optional)
-      message: 'Thank you, Enjoy the movie', // (required)
+      title: 'Payment Success',
+      message: 'Thank you, Enjoy the movie',
     });
     this.props.navigation.navigate('Ticket');
   };
@@ -65,9 +65,7 @@ class Payment extends Component {
     await this.props.updateUser(token, {
       id: user.id,
       fullName: values.fullName,
-      // email: values.email,
       phoneNumber: values.phoneNumber,
-      // password: values.newPassword,
     });
     setTimeout(() => {
       this.setState({isLoading: false, isMessage: true});
@@ -190,9 +188,6 @@ class Payment extends Component {
                     )}
                   </View>
                 )}
-                {/* <View style={styles.formBtn}>
-                  <Button onPress={handleSubmit}>Pay your order</Button>
-                </View> */}
               </View>
             )}
           </Formik>

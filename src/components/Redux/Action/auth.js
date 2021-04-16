@@ -63,7 +63,6 @@ export const updateUser = (token, data) => {
       Object.keys(data).forEach((key) => {
         form.append(key, data[key]);
       });
-      console.log(form);
       dispatch({
         type: 'SET_AUTH_MESSAGE',
         payload: '',

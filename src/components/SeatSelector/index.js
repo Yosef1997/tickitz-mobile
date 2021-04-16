@@ -44,7 +44,6 @@ export default class SeatSelector extends Component {
 
   onSelect(seat) {
     this.props.onPress(seat);
-    // this.props.availableSeat(this.availableSeat());
   }
   componentDidMount() {
     this.props.allSeat(this.allSeat());

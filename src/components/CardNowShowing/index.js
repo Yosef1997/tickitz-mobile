@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import {View, TouchableOpacity, Image, StyleSheet} from 'react-native';
 
 export default class index extends Component {
-  componentDidMount() {
-    console.log(this.props.source);
-  }
   render() {
     return (
       <TouchableOpacity onPress={this.props.onPress}>

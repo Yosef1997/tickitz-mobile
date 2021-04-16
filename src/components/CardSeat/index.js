@@ -16,7 +16,6 @@ export default class index extends Component {
     const {selectedSeat} = this.state;
     this.setState({selectedSeat: [...selectedSeat, ...[id]]}, () => {
       const {selectedSeat} = this.state;
-      console.log(selectedSeat);
     });
   };
   render() {

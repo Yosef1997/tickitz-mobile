@@ -39,21 +39,6 @@ class History extends Component {
             }}
           />
         )}
-        {/* <FlatList
-          data={order.history}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={({item}) => {
-            return (
-              <CardHistory
-                image={Theater}
-                // date={'Tuesday, 07 July 2020'}
-                date={moment(item.date).format('dddd, DD MMMM YYYY')}
-                time={item.time}
-                movie={item.movie}
-              />
-            );
-          }}
-        /> */}
         <Footer />
       </ScrollView>
     );

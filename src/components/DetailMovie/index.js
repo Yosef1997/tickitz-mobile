@@ -11,7 +11,7 @@ export default class index extends Component {
           </View>
         </View>
         <Text style={styles.title}>{this.props.title}</Text>
-        <Text style={styles.genre}>{this.props.genre}</Text>
+        <Text style={styles.genre}>{this.props.genre.join(', ')}</Text>
         <View style={styles.detailcard}>
           <Text style={styles.text1}>Release date</Text>
           <Text style={styles.text1}>Directed by</Text>

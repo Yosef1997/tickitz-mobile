@@ -52,7 +52,7 @@ class index extends Component {
             <View style={styles.pickerset}>
               <FlatList
                 data={this.props.movie.allLocation}
-                keyExtractor={(item, index) => String(item.id)}
+                keyExtractor={(item) => String(item.id)}
                 renderItem={({item}) => {
                   return (
                     <TouchableOpacity
